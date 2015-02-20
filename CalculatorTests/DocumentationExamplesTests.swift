@@ -15,7 +15,7 @@ func getMathExp() -> String
     return arc4random() % 2 == 0 ? "2+2" : "2+2."
 }
 
-class DocumentationTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
+class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDelegate
 {
     //MARK:- CalculatorDataSource
     var constVariables: [String: NSDecimalNumber]

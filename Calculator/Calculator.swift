@@ -32,10 +32,7 @@ public class Calculator: NSObject
     {
         didSet
         {
-            token = ""
-            tokenType = .None
-            index = 0
-            error = nil
+            resetTokensStuff()
         }
     }
     
@@ -67,6 +64,8 @@ public class Calculator: NSObject
     
     public func eval() -> (result: NSDecimalNumber?, error: NSError?)
     {
+        resetTokensStuff()
+        
         var result: NSDecimalNumber? = nil
         
         getToken()
@@ -99,10 +98,12 @@ public class Calculator: NSObject
     {
         self.expression = expression
     }
+    
     public override convenience init()
     {
         self.init(expression: "")
     }
+    
     deinit
     {
         cacheVariablesIfNeeded()
@@ -146,6 +147,13 @@ public class Calculator: NSObject
                 tokenType = .Error
             }
         }
+    }
+    private func resetTokensStuff()
+    {
+        token = ""
+        tokenType = .None
+        index = 0
+        error = nil
     }
     private var needCacheVariables = false
     
@@ -644,9 +652,7 @@ public class Calculator: NSObject
     //FIXME: replace array to set in Swift 1.2
     optional var functions: [String]                         {get}
     
-    
 }
-
 
 @objc public protocol CalculatorDelegate
 {
