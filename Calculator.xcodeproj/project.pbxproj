@@ -15,6 +15,7 @@
 		FA4A20D71A9760D10084E1BA /* CalculatorErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20D41A9760D10084E1BA /* CalculatorErrorTests.swift */; };
 		FA4A20D81A9760D10084E1BA /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20D51A9760D10084E1BA /* CalculatorTests.swift */; };
 		FA4A20D91A9760D10084E1BA /* UtilitiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20D61A9760D10084E1BA /* UtilitiesTests.swift */; };
+		FA4A20DB1A976F730084E1BA /* DocumentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20DA1A976F730084E1BA /* DocumentationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		FA4A20D41A9760D10084E1BA /* CalculatorErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorErrorTests.swift; sourceTree = "<group>"; };
 		FA4A20D51A9760D10084E1BA /* CalculatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		FA4A20D61A9760D10084E1BA /* UtilitiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilitiesTests.swift; sourceTree = "<group>"; };
+		FA4A20DA1A976F730084E1BA /* DocumentationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				FA4A20D41A9760D10084E1BA /* CalculatorErrorTests.swift */,
 				FA4A20D51A9760D10084E1BA /* CalculatorTests.swift */,
 				FA4A20D61A9760D10084E1BA /* UtilitiesTests.swift */,
+				FA4A20DA1A976F730084E1BA /* DocumentationTests.swift */,
 				FA4A20B71A975EBD0084E1BA /* Supporting Files */,
 			);
 			path = CalculatorTests;
@@ -250,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4A20DB1A976F730084E1BA /* DocumentationTests.swift in Sources */,
 				FA4A20D71A9760D10084E1BA /* CalculatorErrorTests.swift in Sources */,
 				FA4A20D81A9760D10084E1BA /* CalculatorTests.swift in Sources */,
 				FA4A20D91A9760D10084E1BA /* UtilitiesTests.swift in Sources */,

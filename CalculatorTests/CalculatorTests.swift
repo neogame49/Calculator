@@ -35,7 +35,7 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         
     }
     
-    func computForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
+    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
         handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
     {
         switch(function)
@@ -319,4 +319,5 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         XCTAssertEqual(cachedVariables[varName]!, NSDecimalNumber(string: "4"),
             "Wrong cached value into \(varName) variable in CalculateExpresionWithAsignedVariable case")
     }
+    
 }

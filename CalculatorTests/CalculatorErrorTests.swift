@@ -26,7 +26,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
     }
     
     // MARK:- CalculatorDelegate
-    func computForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
+    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
         handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
     {
         switch(function)

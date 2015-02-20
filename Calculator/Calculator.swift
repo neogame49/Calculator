@@ -99,6 +99,10 @@ public class Calculator: NSObject
     {
         self.expression = expression
     }
+    public override convenience init()
+    {
+        self.init(expression: "")
+    }
     deinit
     {
         cacheVariablesIfNeeded()
@@ -466,7 +470,7 @@ public class Calculator: NSObject
             insideFunctionStack.pop()
             
             // try coumput function
-            if let functionResult = delegate?.computForCalculator?(self, function: function, params: params!, handleError: { err in self.error = err })
+            if let functionResult = delegate?.calculateForCalculator?(self, function: function, params: params!, handleError: { err in self.error = err })
             {
                 result = functionResult
                 getToken()
@@ -646,7 +650,7 @@ public class Calculator: NSObject
 
 @objc public protocol CalculatorDelegate
 {
-    optional func computForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
-        handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
+    optional func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber], handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
+    
     optional func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber])
 }
