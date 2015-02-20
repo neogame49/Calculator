@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		FA4A20AD1A975EBC0084E1BA /* Calculator.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4A20AC1A975EBC0084E1BA /* Calculator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA4A20B31A975EBD0084E1BA /* Calculator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4A20A71A975EBC0084E1BA /* Calculator.framework */; };
-		FA4A20BA1A975EBD0084E1BA /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20B91A975EBD0084E1BA /* CalculatorTests.swift */; };
+		FA4A20CF1A9760100084E1BA /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20CC1A9760100084E1BA /* Calculator.swift */; };
+		FA4A20D01A9760100084E1BA /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20CD1A9760100084E1BA /* Stack.swift */; };
+		FA4A20D11A9760100084E1BA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4A20CE1A9760100084E1BA /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +30,9 @@
 		FA4A20AC1A975EBC0084E1BA /* Calculator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Calculator.h; sourceTree = "<group>"; };
 		FA4A20B21A975EBD0084E1BA /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA4A20B81A975EBD0084E1BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA4A20B91A975EBD0084E1BA /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
+		FA4A20CC1A9760100084E1BA /* Calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		FA4A20CD1A9760100084E1BA /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		FA4A20CE1A9760100084E1BA /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,7 @@
 		FA4A20A91A975EBC0084E1BA /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				FA4A20D21A9760460084E1BA /* CalculatorCore */,
 				FA4A20AC1A975EBC0084E1BA /* Calculator.h */,
 				FA4A20AA1A975EBC0084E1BA /* Supporting Files */,
 			);
@@ -88,7 +93,6 @@
 		FA4A20B61A975EBD0084E1BA /* CalculatorTests */ = {
 			isa = PBXGroup;
 			children = (
-				FA4A20B91A975EBD0084E1BA /* CalculatorTests.swift */,
 				FA4A20B71A975EBD0084E1BA /* Supporting Files */,
 			);
 			path = CalculatorTests;
@@ -100,6 +104,24 @@
 				FA4A20B81A975EBD0084E1BA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FA4A20D21A9760460084E1BA /* CalculatorCore */ = {
+			isa = PBXGroup;
+			children = (
+				FA4A20CC1A9760100084E1BA /* Calculator.swift */,
+				FA4A20D31A9760610084E1BA /* Utilities */,
+			);
+			name = CalculatorCore;
+			sourceTree = "<group>";
+		};
+		FA4A20D31A9760610084E1BA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FA4A20CD1A9760100084E1BA /* Stack.swift */,
+				FA4A20CE1A9760100084E1BA /* Utilities.swift */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +231,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4A20D11A9760100084E1BA /* Utilities.swift in Sources */,
+				FA4A20D01A9760100084E1BA /* Stack.swift in Sources */,
+				FA4A20CF1A9760100084E1BA /* Calculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +241,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA4A20BA1A975EBD0084E1BA /* CalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +419,7 @@
 				FA4A20BF1A975EBD0084E1BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA4A20C01A975EBD0084E1BA /* Build configuration list for PBXNativeTarget "CalculatorTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +428,7 @@
 				FA4A20C21A975EBD0084E1BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
