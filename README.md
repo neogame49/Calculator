@@ -9,6 +9,8 @@
   - Custom constants and functions with one or multiple arguments
   - Available to the user to create and use custom variables
   - Error handling
+
+  
 ***
 
 # How to use
