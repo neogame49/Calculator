@@ -152,10 +152,10 @@ class CalculatorTest:CalculatorDataSource, CalculatorDelegate
         calculator.delegate = self
 
         calculator.expression = "2 + cos(0)"
-        println(calculator.eval().result!) // print "6.283185307"
+        println(calculator.eval().result!) // print "3"
         
         calculator.expression = "max(2^5, 5!) + min(23, 45/2)"
-        println(calculator.eval().result!) // print "32.38905609860964864"
+        println(calculator.eval().result!) // print "142.5"
         
         
         
