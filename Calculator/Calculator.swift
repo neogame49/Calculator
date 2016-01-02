@@ -43,7 +43,7 @@ public class Calculator: NSObject
         needCacheVariables = false
     }
     
-    public func eval() -> (result: NSDecimalNumber?, error: NSError?)
+    public func eval() throws -> NSDecimalNumber
     {
         resetTokensStuff()
         
@@ -59,19 +59,17 @@ public class Calculator: NSObject
         
         if error != nil
         {
-            return (nil, error)
+            throw error!
         }
         
         if result == nil && error == nil // empty expresion case
         {
             error = NSError(domain: "empty expression", code: 10000, userInfo: nil)
             
-            return (nil, error)
+            throw error!
         }
         
-        
-        
-        return(result, nil) // normal result without error
+        return result! // normal result without error
     }
     
     // MARK:- init
