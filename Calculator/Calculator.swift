@@ -6,10 +6,6 @@
 //  Copyright (c) 2015 Scherbiy Roman. All rights reserved.
 //
 
-import UIKit
-import Foundation
-
-
 
 public class Calculator: NSObject
     
@@ -20,15 +16,9 @@ public class Calculator: NSObject
         public static let RangeOfErrorPartExpression = "com.sherbiyRoman/Calculator RangeOfErrorPartExpression"
     }
     weak public var dataSource: CalculatorDataSource?
-    {
-        didSet
-        {
-           reloadData()
-        }
-    }
     weak public var delegate: CalculatorDelegate?
     
-    public var expression: String
+    public var expression = ""
     {
         didSet
         {
@@ -36,18 +26,9 @@ public class Calculator: NSObject
         }
     }
     
-    public func reloadData()
-    {
-        constVariables = dataSource?.constVariables ?? [String: NSDecimalNumber]()
-        functions = dataSource?.functions ?? [String]()
-        
-        cacheVariablesIfNeeded()
-        
-        if let newVariables = dataSource?.variables
-        {
-            variables = newVariables
-        }
-    }
+    /// Stores user's own valiables and them values
+    /// Yo migth add cached before variables before calculation
+    public var variables = [String: NSDecimalNumber]()
     
     public func cacheVariablesIfNeeded()
     {
@@ -99,10 +80,7 @@ public class Calculator: NSObject
         self.expression = expression
     }
     
-    public override convenience init()
-    {
-        self.init(expression: "")
-    }
+    public  override init(){ }
     
     deinit
     {
@@ -113,8 +91,7 @@ public class Calculator: NSObject
     
     // MARK:- implimetantion, private section
     
-    private enum TokenType
-    {
+    private enum TokenType {
         case Delimiter
         case Number
         case ConstVariable
@@ -150,16 +127,13 @@ public class Calculator: NSObject
     }
     private func resetTokensStuff()
     {
+        self.cacheVariablesIfNeeded()
         token = ""
         tokenType = .None
         index = 0
         error = nil
     }
     private var needCacheVariables = false
-    
-    private var functions = [String]()
-    private var constVariables = [String: NSDecimalNumber]()
-    private var variables = [String: NSDecimalNumber]()
     
     private var openBracketsStack = Stack<Bool>()
     private var insideFunctionStack = Stack<Bool>()
@@ -534,7 +508,7 @@ public class Calculator: NSObject
             result = NSDecimalNumber(string: token)
             getToken()
         case .ConstVariable:
-            result = constVariables[token]
+            result = self.dataSource?.constantVariables(self)[token]
             getToken()
         case .Variable:
             if let variable = variables[token]
@@ -601,31 +575,21 @@ public class Calculator: NSObject
                 userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfCurrentToken])
         }
     }
-    private var isTokenConstVariable: Bool
-    {
-        if constVariables[token] != nil
-        {
-            return true
+    private var isTokenConstVariable: Bool {
+        if let constVariables = self.dataSource?.constantVariables(self) {
+            return constVariables[self.token] != nil
         }
-        
         return false
-
     }
     
     private var isTokenFunction: Bool
     {
-        for function in functions
-        {
-            if function == token
-            {
-                return true
-            }
+        if let functions = self.dataSource?.functions(self) {
+            return functions.contains(token)
         }
-        
-        
         return false
-
     }
+    
     private func rangeOfToken(token: String, index: Int) -> NSRange
     {
         let distance = token.length
@@ -642,20 +606,7 @@ public class Calculator: NSObject
 
 
 
-
-// MARK:- delegate interfaces
-
-@objc public protocol CalculatorDataSource
-{
-    optional var constVariables: [String: NSDecimalNumber]   {get}
-    optional var variables: [String: NSDecimalNumber]        {get}
-    //FIXME: replace array to set in Swift 1.2
-    optional var functions: [String]                         {get}
-    
-}
-
-@objc public protocol CalculatorDelegate
-{
+@objc public protocol CalculatorDelegate {
     optional func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber], handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
     
     optional func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber])

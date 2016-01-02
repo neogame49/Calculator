@@ -10,21 +10,19 @@ import Foundation
 import XCTest
 import Calculator
 
-func getMathExp() -> String
-{
+func getMathExp() -> String {
     return arc4random() % 2 == 0 ? "2+2" : "2+2."
 }
 
 class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDelegate
 {
     //MARK:- CalculatorDataSource
-    var constVariables: [String: NSDecimalNumber]
-        {
+    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
             return ["Pi": NSDecimalNumber(string: "3.1415926535"),
                 "e": NSDecimalNumber(string: "2.7182818284")]
     }
-    var functions: [String]
-        {
+    
+    func functions(calculator: Calculator) -> Set<String> {
             return ["sin","cos","max","min"]
     }
     

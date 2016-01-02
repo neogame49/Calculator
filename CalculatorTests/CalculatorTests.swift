@@ -19,12 +19,11 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
     var cachedVariables = [String: NSDecimalNumber]()
     
     //MARK:- CalculatorDataSource
-    var constVariables: [String: NSDecimalNumber]
-        {
+    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
             return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
     }
-    var functions: [String]
-        {
+    
+    func functions(calculator: Calculator) -> Set<String> {
             return ["sin","cos","max","min"]
     }
     
