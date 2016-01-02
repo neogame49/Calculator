@@ -37,7 +37,7 @@ public extension String
     
     subscript (i: Int) -> Character
     {
-        return self[advance(self.startIndex, i)]
+        return self[self.startIndex.advancedBy(i)]
     }
     
 }
@@ -46,12 +46,12 @@ infix operator =~ {associativity left precedence 40}
 
 func =~ (string: String, patern: String) -> Bool
 {
-    let regExp = NSRegularExpression(pattern: patern, options: .CaseInsensitive, error: nil)
+    let regExp = try? NSRegularExpression(pattern: patern, options: .CaseInsensitive)
     
     if let correctRegExp = regExp
     {
-        let matches = correctRegExp.matchesInString(string, options: nil, range:
-            NSMakeRange(0,countElements(string)))
+        let matches = correctRegExp.matchesInString(string, options: [], range:
+            NSMakeRange(0,string.length))
         
         return matches.count > 0
     }
@@ -98,8 +98,6 @@ func != (firstValue: NSDecimalNumber, secondValue: NSDecimalNumber) -> Bool
 
 func ^ (firstValue: NSDecimalNumber, secondValue: NSDecimalNumber) -> NSDecimalNumber
 {
-    let power = secondValue.integerValue
-    //return firstValue.decimalNumberByRaisingToPower(power)
     return NSDecimalNumber(double: pow(firstValue.doubleValue, secondValue.doubleValue))
 }
 
@@ -125,4 +123,13 @@ public postfix func ^! (inout value: NSDecimalNumber) -> NSDecimalNumber?
 private func factorial(value: Int) -> Int
 {
     return value == 0 ? 1 : value * factorial(value - 1)
+}
+
+// MARK:- string extension
+extension String
+{
+    var length: Int{
+        
+        return self.characters.underestimateCount()
+    }
 }

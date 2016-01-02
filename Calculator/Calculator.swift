@@ -38,12 +38,12 @@ public class Calculator: NSObject
     
     public func reloadData()
     {
-        constVariables = dataSource?.constVariables? ?? [String: NSDecimalNumber]()
-        functions = dataSource?.functions? ?? [String]()
+        constVariables = dataSource?.constVariables ?? [String: NSDecimalNumber]()
+        functions = dataSource?.functions ?? [String]()
         
         cacheVariablesIfNeeded()
         
-        if let newVariables = dataSource?.variables?
+        if let newVariables = dataSource?.variables
         {
             variables = newVariables
         }
@@ -167,7 +167,7 @@ public class Calculator: NSObject
     
     private var endOfExpresion : Int
     {
-        return countElements(expression)
+        return expression.length
     }
     
     private func getToken()
@@ -379,7 +379,7 @@ public class Calculator: NSObject
         
         var tempValue: NSDecimalNumber? = nil
         
-        var indexOfDelimiter = index
+        let indexOfDelimiter = index
         
         if token == "^"
         {
@@ -560,7 +560,7 @@ public class Calculator: NSObject
     {
         var result = [NSDecimalNumber]()
         
-        do
+        repeat
         {
             var parameter: NSDecimalNumber? = nil
             
@@ -628,7 +628,7 @@ public class Calculator: NSObject
     }
     private func rangeOfToken(token: String, index: Int) -> NSRange
     {
-        let distance = Int(countElements(token))
+        let distance = token.length
         let location =  index - (distance)
         
         return NSMakeRange(location, distance)

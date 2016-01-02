@@ -10,6 +10,7 @@ import Foundation
 import XCTest
 
 
+
 // MARK:- Character Utilities test
 class CharacterUtilitiesTest: XCTestCase
 {
@@ -112,7 +113,7 @@ class CharacterUtilitiesTest: XCTestCase
     {
         let nonDelimiter: Character = "g"
         
-        XCTAssert(!nonDelimiter.isDelimiter, "Fail non  delimiter delimiter case")
+        XCTAssert(!nonDelimiter.isDelimiter, "Fail non  delimiter case")
         
     }
     

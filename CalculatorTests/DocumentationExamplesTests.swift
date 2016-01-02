@@ -93,13 +93,13 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
         if let result = response.result
         {
-            println(result)
+            print(result)
             // do some stuff with result (NSDecimalNumber type)
         }
         else
         {
             let error = response.error!
-            println(error.domain)
+            print(error.domain)
             // do stuff with error (NSError type)
         }
     
@@ -110,19 +110,19 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         let calculator = Calculator()
         
         calculator.expression = "2+2"
-        println(calculator.eval().result!) // print "4"
+        print(calculator.eval().result!) // print "4"
         
         calculator.expression = "2^3 - 6*3"
-        println(calculator.eval().result!) // print "-10"
+        print(calculator.eval().result!) // print "-10"
         
         calculator.expression = "45 + 25/5 - 5!"
-        println(calculator.eval().result!) // print "-70"
+        print(calculator.eval().result!) // print "-70"
         
         calculator.expression = " (2+2)*2 + (10* -3)"
-        println(calculator.eval().result!) // print "-22"
+        print(calculator.eval().result!) // print "-22"
         
         calculator.expression = " 1 / 5 + 0.005"
-        println(calculator.eval().result!) // print "0.205"
+        print(calculator.eval().result!) // print "0.205"
 
         
     }
@@ -134,10 +134,10 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         calculator.delegate = self
         
         calculator.expression = "Pi + Pi"
-        println(calculator.eval().result!) // print "6.283185307"
+        print(calculator.eval().result!) // print "6.283185307"
         
         calculator.expression = "25 + e^2"
-        println(calculator.eval().result!) // print "32.38905609860964864"
+        print(calculator.eval().result!) // print "32.38905609860964864"
         
         
         
@@ -149,10 +149,10 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         calculator.delegate = self
 
         calculator.expression = "2 + cos(0)"
-        println(calculator.eval().result!) // print "3"
+        print(calculator.eval().result!) // print "3"
         
         calculator.expression = "max(2^5, 5!) + min(23, 45/2)"
-        println(calculator.eval().result!) // print "142.5"
+        print(calculator.eval().result!) // print "142.5"
         
         
         
@@ -164,19 +164,19 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         calculator.delegate = self
         
         calculator.expression = "a = 2"
-        println(calculator.eval().result!) // print "2"
+        print(calculator.eval().result!) // print "2"
         
         calculator.expression = "b = 2 + 2"
-        println(calculator.eval().result!) // print "4"
+        print(calculator.eval().result!) // print "4"
         
         calculator.expression = "c = b - a"
-        println(calculator.eval().result!) // print "2"
+        print(calculator.eval().result!) // print "2"
         
         calculator.expression = " b! - c"
-        println(calculator.eval().result!) // print "22"
+        print(calculator.eval().result!) // print "22"
         
         calculator.expression = "c = c^3"
-        println(calculator.eval().result!) // print "8"
+        print(calculator.eval().result!) // print "8"
         
         calculator.cacheVariablesIfNeeded() // manualy cache variables
         
@@ -192,12 +192,12 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
         if let error = response.error
         {
-            println(error.domain)
+            print(error.domain)
             
-            if let rangeOfWrongPart =  error.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+            if let rangeOfWrongPart =  error.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
             {
                 let wrongPart = (mathExp as NSString).substringWithRange(rangeOfWrongPart)
-                println(wrongPart) // print "2..2"
+                print(wrongPart) // print "2..2"
             }
         }
     }

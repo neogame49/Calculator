@@ -10,6 +10,7 @@ import Foundation
 import XCTest
 import Calculator
 
+@testable import Calculator
 
 // MARK:- Calculator tests
 class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate

@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 //! Project version number for Calculator.
-FOUNDATION_EXPORT double CalculatorVersionNumber = 1.0;
+FOUNDATION_EXPORT double CalculatorVersionNumber = 1.1;
 
 //! Project version string for Calculator.
-FOUNDATION_EXPORT const unsigned char CalculatorVersionString[] = "1.0";
+FOUNDATION_EXPORT const unsigned char CalculatorVersionString[] = "1.1";
 
 // In this header, you should import all the public headers of your framework using statements like #import <Calculator/PublicHeader.h>
 

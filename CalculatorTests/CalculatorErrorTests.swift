@@ -10,12 +10,13 @@ import Foundation
 import XCTest
 import Calculator
 
+@testable import Calculator
 
 class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDelegate
 {
     var calculator: Calculator!
     
-    //MARK:- CalculatorDataSource
+    // MARK:- CalculatorDataSource
     var constVariables: [String: NSDecimalNumber]
         {
             return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
@@ -96,13 +97,13 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorNumberFormarCase")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorNumberFormarCase")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorNumberFormarCase")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 5)),
             "uncorrect rangeOfErrorPart in ErrorNumberFormarCase")
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorMissingCloseBracket()
@@ -115,13 +116,13 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorMissingCloseBracket")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorMissingCloseBracket")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorMissingCloseBracket")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
             "uncorrect rangeOfErrorPart in ErrorMissingCloseBracket")
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorMissingOpenBracket()
@@ -134,13 +135,13 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorMissingOpenBracket")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorMissingOpenBracket")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorMissingOpenBracket")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(5, 1)),
             "uncorrect rangeOfErrorPart in ErrorMissingOpenBracket")
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorTryToUseUndefineVariables()
@@ -153,14 +154,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorTryToUseUndefineVariables")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryToUseUndefineVariables")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryToUseUndefineVariables")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(4, 9)),
             "uncorrect rangeOfErrorPart in ErrorTryToUseUndefineVariables")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorTryToComputedUndefineFunction()
@@ -173,14 +174,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorTryToComputedUndefineFunction")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryToComputedUndefineFunction")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryToComputedUndefineFunction")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 9)),
             "uncorrect rangeOfErrorPart in ErrorTryToComputedUndefineFunction")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorExpresionWithUndefineSumbols()
@@ -193,14 +194,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorExpresionWithUndefineSumbols")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorExpresionWithUndefineSumbols")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorExpresionWithUndefineSumbols")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(1, 1)),
             "uncorrect rangeOfErrorPart in ErrorExpresionWithUndefineSumbols")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
@@ -214,14 +215,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorToMuchUnaryOperators")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorToMuchUnaryOperators")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorToMuchUnaryOperators")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(4, 1)),
             "uncorrect rangeOfErrorPart in ErrorToMuchUnaryOperators")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorDivByZero()
@@ -234,14 +235,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorDivByZero")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorDivByZero")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorDivByZero")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(1, 1)),
             "uncorrect rangeOfErrorPart in ErrorDivByZero")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testMissingSecondOperand()
@@ -254,14 +255,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in MissingSecondOperand")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in MissingSecondOperand")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in MissingSecondOperand")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(3, 1)),
             "uncorrect rangeOfErrorPart in MissingSecondOperand")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
@@ -275,14 +276,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorCommaOutsideOfFunction")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorCommaOutsideOfFunction")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorCommaOutsideOfFunction")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(9, 1)),
             "uncorrect rangeOfErrorPart in ErrorCommaOutsideOfFunction")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     func testErrorMissingArgumentIntoFunction()
@@ -295,14 +296,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in MissingArgumentIntoFunction")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in MissingArgumentIntoFunction")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in MissingArgumentIntoFunction")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 3)),
             "uncorrect rangeOfErrorPart in MissingArgumentIntoFunction")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
@@ -316,14 +317,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorTryAssignedValueToConstant")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryAssignedValueToConstant")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryAssignedValueToConstant")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
             "uncorrect rangeOfErrorPart in ErrorTryAssignedValueToConstant")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
@@ -337,14 +338,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 1)),
             "uncorrect rangeOfErrorPart in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
@@ -358,14 +359,14 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         XCTAssertNotNil(result.error, "nil error in ErrorTryComputeFactorialFromNegativeNumber")
         XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryComputeFactorialFromNegativeNumber")
         
-        let rangeOfErrorPart = result.error?.userInfo?[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
+        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
         
         XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryComputeFactorialFromNegativeNumber")
         XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
             "uncorrect rangeOfErrorPart in ErrorTryComputeFactorialFromNegativeNumber")
         
         
-        println(result.error!.domain)
+        print(result.error!.domain)
         
     }
     
