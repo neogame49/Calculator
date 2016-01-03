@@ -66,7 +66,7 @@ public class Calculator: NSObject
     }
     public func cacheVariables()
     {
-        delegate?.cacheVariablesForCalculator?(self, variables: self.variables)
+        delegate?.cacheVariablesForCalculator(self, variables: self.variables)
         needCacheVariables = false
     }
     
@@ -437,17 +437,17 @@ public class Calculator: NSObject
             openBracketsStack.pop()
             insideFunctionStack.pop()
             
-            // try calculate function FIXEEEEEEEE
-            if let functionResult = delegate?.calculateForCalculator?(self, function: function, params: params, handleError: nil)
-            {
-                result = functionResult
-                try getToken()
-            }
-            else
-            {
+            guard let delegate = self.delegate else {
                 throw CalculatorError.FailedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
             }
             
+            do {
+              result = try delegate.calculateForCalculator(self, function: function, params: params)
+            } catch {
+               throw CalculatorError.FailedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
+            }
+            
+            try getToken()
         }
         else
         {
@@ -576,12 +576,4 @@ public class Calculator: NSObject
     {
         return rangeOfToken(token, index: index)
     }
-}
-
-
-
-@objc public protocol CalculatorDelegate {
-    optional func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber], handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
-    
-    optional func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber])
 }

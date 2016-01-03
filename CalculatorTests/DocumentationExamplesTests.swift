@@ -26,50 +26,39 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
     }
     
     // MARK:- CalculatorDelegate
-    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber],
-        handleError: ((NSError) -> Void)?) -> NSDecimalNumber?
-    {
+    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
         switch(function)
         {
         case "sin":
             if params.count != 1
             {
-                let error = NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
-                handleError?(error)
-                return nil
+                throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
             }
             return NSDecimalNumber(double: sin(params.first!.doubleValue))
         case "cos":
             if params.count != 1
             {
-                let error = NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
-                handleError?(error)
-                return nil
+                throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
             }
             return NSDecimalNumber(double: cos(params.first!.doubleValue))
         case "max":
             if params.count != 2
             {
-                let error = NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
-                handleError?(error)
-                return nil
+                throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
             }
             return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
         case "min":
             if params.count != 2
             {
-                let error = NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
-                handleError?(error)
-                return nil
+                throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
             }
             return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
         default:
-            let error = NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
-            handleError?(error)
-            return nil
+            throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
         }
         
     }
+
     
     override func setUp() {
         super.setUp()
