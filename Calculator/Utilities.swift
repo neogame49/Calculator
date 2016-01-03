@@ -109,13 +109,12 @@ func ^ (firstValue: NSDecimalNumber, secondValue: NSDecimalNumber) -> NSDecimalN
 // comput factorial of value
 // truncates the fractional part if need
 // if value is negtive number return nil
-public postfix func ^! (inout value: NSDecimalNumber) -> NSDecimalNumber?
+public postfix func ^! (value: NSDecimalNumber) -> NSDecimalNumber?
 {
     let intValue = value.integerValue
     if intValue >= 0
     {
         let result = factorial(intValue)
-        
         return NSDecimalNumber(integer: result)
     }
     else // negative number
