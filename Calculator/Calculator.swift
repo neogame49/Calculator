@@ -6,15 +6,42 @@
 //  Copyright (c) 2015 Scherbiy Roman. All rights reserved.
 //
 
+// MARK:- Error part
+public enum CalculatorError: ErrorType {
+    case EmptyExpression
+    /// Occurs when user passed number like '2.', '2..25' etc.
+    /// Also attached range of wrong part of expression.
+    case WrongFormatOfNumber(range: Range<Int>)
+    /// Occurs when user missed required argument like '2+', 'max(2, )' etc.
+    /// Also attached range of  part of expression before missing.
+    case MissingArgument(range: Range<Int>)
+    /// Occurs when user tried div by zero.
+    /// Also attached range of  part of expression before missing.
+    case DivByZero(range: Range<Int>)
+    /// Occurs when user tried  get factorial from negative number.
+    /// Also attached range of wrong part of expression.
+    case FactorialFromNegativeNumber(range: Range<Int>)
+    /// Occurs when user typed close bracket without opening bracket before.
+    /// Also attached range of wrong part of expression.
+    case MissingOpenedBracket(range: Range<Int>)
+    /// Occurs when user didn't type close bracket and opened bracket before.
+    /// Also attached range of wrong part of expression.
+    case MissingClosedBracket(range: Range<Int>)
+    /// Occurs when delegate method ... throws error during trying calculate function.
+    /// Also attached range of wrong part of expression.
+    case FailedComputedOfFunction(range: Range<Int>)
+    /// Occurs user try use in experession undefined variable( it absent into variables array).
+    /// Also attached range of wrong part of expression.
+    case UndefinedVariable(range: Range<Int>)
+    /// Occurs when user passed undefined delimeter or it used is incorect like '2?2', '2++25' etc.
+    /// Also attached range of wrong part of expression.
+    case UndefineOrIncorectUsedOfTheDelimiter(range: Range<Int>)
+}
 
 public class Calculator: NSObject
-    
 {
 // MARK:- interface
-    public struct PublicConstants
-    {
-        public static let RangeOfErrorPartExpression = "com.sherbiyRoman/Calculator RangeOfErrorPartExpression"
-    }
+
     weak public var dataSource: CalculatorDataSource?
     weak public var delegate: CalculatorDelegate?
     
@@ -49,24 +76,17 @@ public class Calculator: NSObject
         
         var result: NSDecimalNumber? = nil
         
-        getToken()
-        eval0(&result)
+        try getToken()
+        try eval0(&result)
         
-        if  tokenType == .Delimiter && error == nil // uncorrect used delimiter
+        if  tokenType == .Delimiter  // incorrect used delimiter
         {
-            handleDelimiterAtomCase()
+            try handleDelimiterAtomCase()
         }
         
-        if error != nil
+        if result == nil  // empty expresion case
         {
-            throw error!
-        }
-        
-        if result == nil && error == nil // empty expresion case
-        {
-            error = NSError(domain: "empty expression", code: 10000, userInfo: nil)
-            
-            throw error!
+            throw CalculatorError.EmptyExpression
         }
         
         return result! // normal result without error
@@ -108,28 +128,13 @@ public class Calculator: NSObject
     private var token = ""
     private var tokenType = TokenType.None
     private var index = 0
-    private var error: NSError?{
-        didSet
-        {
-            if error != nil && oldValue != nil
-            {
-                error = oldValue // cant replaced by a early error at a later
-            }
-            
-            if error != nil
-            {
-                token = ""
-                tokenType = .Error
-            }
-        }
-    }
+ 
     private func resetTokensStuff()
     {
         self.cacheVariablesIfNeeded()
         token = ""
         tokenType = .None
         index = 0
-        error = nil
     }
     private var needCacheVariables = false
     
@@ -142,7 +147,7 @@ public class Calculator: NSObject
         return expression.length
     }
     
-    private func getToken()
+    private func getToken() throws
     {
         token = ""
         tokenType = .None
@@ -206,15 +211,13 @@ public class Calculator: NSObject
         }
         else
         {
-            error = NSError(domain: "Unknown or uncorrect use of symbols \(currentSumbol)", code: 1000, userInfo: [PublicConstants.RangeOfErrorPartExpression :
-                rangeOfToken(String(currentSumbol), index: index+1)])
-            return
+            throw CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(range: rangeOfToken(String(currentSumbol), index: index+1))
         }
         
         if tokenType == .Number && !(token =~ PrivateConstants.paternForNumber)
         {
-            error = NSError(domain: "wrong format for number \(token)", code: 1000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfCurrentToken])
-            return
+            throw CalculatorError.WrongFormatOfNumber(range: rangeOfCurrentToken)
+
         }
         
         if tokenType == .Variable
@@ -232,24 +235,24 @@ public class Calculator: NSObject
         
     }
     // MARK:- calculate methods
-    private func eval0(inout result: NSDecimalNumber?)
+    private func eval0(inout result: NSDecimalNumber?) throws
     {
         if tokenType == .Variable
         {
             let tempToken = token
-            getToken()
+            try getToken()
             
             if token != "="
             {
                 index = 0 // move to start
-                getToken()
+                try getToken()
             }
             else
             {
-               getToken()
-               eval1(&result)
+               try getToken()
+               try eval1(&result)
                 
-                if result != nil && error == nil
+                if result != nil
                 {
                     variables[tempToken] = result!
                     needCacheVariables = true;
@@ -258,11 +261,11 @@ public class Calculator: NSObject
             }
         }
         
-        eval1(&result)
+        try eval1(&result)
     }
-    private func eval1(inout result: NSDecimalNumber?)
+    private func eval1(inout result: NSDecimalNumber?) throws
     {
-        eval2(&result)
+        try eval2(&result)
         
         var tempValue: NSDecimalNumber?
         
@@ -271,9 +274,9 @@ public class Calculator: NSObject
         
         while op == "+" || op == "-"
         {
-            getToken()
+            try getToken()
             tempValue = nil
-            eval2(&tempValue)
+            try eval2(&tempValue)
             
             if result != nil && tempValue != nil
             {
@@ -289,8 +292,7 @@ public class Calculator: NSObject
             }
             else if tempValue == nil  // missing second argument
             {
-                error = NSError(domain: "Missing second argument after \(op)", code: 10000, userInfo:[PublicConstants.RangeOfErrorPartExpression : rangeOfToken(op, index: indexOfOp)])
-                break
+                throw CalculatorError.MissingArgument(range: rangeOfToken(op, index: indexOfOp))
             }
             op = token
             indexOfOp = index
@@ -298,9 +300,9 @@ public class Calculator: NSObject
         
     }
     
-    private func eval2(inout result: NSDecimalNumber?)
+    private func eval2(inout result: NSDecimalNumber?) throws
     {
-        eval3(&result)
+        try eval3(&result)
         
         var tempValue: NSDecimalNumber?
         
@@ -309,9 +311,9 @@ public class Calculator: NSObject
         
         while op == "*" || op == "/"
         {
-            getToken()
+            try getToken()
             tempValue = nil
-            eval3(&tempValue)
+            try eval3(&tempValue)
             
             if result != nil && tempValue != nil
             {
@@ -322,9 +324,7 @@ public class Calculator: NSObject
                 case "/":
                     if tempValue == NSDecimalNumber(string: "0") // div by zero case
                     {
-                        error = NSError(domain: "div by zero", code: 10000, userInfo:
-                        [PublicConstants.RangeOfErrorPartExpression : rangeOfToken(op, index: indexOfOp)])
-                        return
+                        throw CalculatorError.DivByZero(range: rangeOfToken(op, index: indexOfOp))
                     }
                     else
                     {
@@ -336,8 +336,7 @@ public class Calculator: NSObject
             }
             else if tempValue == nil // missing second argument
             {
-                error = NSError(domain: "Missing second argument after \(op)", code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfToken(op, index: indexOfOp)])
-                break
+                throw CalculatorError.MissingArgument(range: rangeOfToken(op, index: indexOfOp))
             }
             
             op = token
@@ -345,9 +344,9 @@ public class Calculator: NSObject
         }
     }
     
-    private func eval3(inout result: NSDecimalNumber?)
+    private func eval3(inout result: NSDecimalNumber?) throws
     {
-        eval4(&result)
+        try eval4(&result)
         
         var tempValue: NSDecimalNumber? = nil
         
@@ -355,8 +354,8 @@ public class Calculator: NSObject
         
         if token == "^"
         {
-            getToken()
-            eval3(&tempValue)
+            try getToken()
+            try eval3(&tempValue)
             
             if result != nil && tempValue != nil
             {
@@ -364,15 +363,14 @@ public class Calculator: NSObject
             }
             else if tempValue == nil // missing second argument
             {
-                error = NSError(domain: "Missing second argument after ^", code: 10000, userInfo:[PublicConstants.RangeOfErrorPartExpression : rangeOfToken("^", index: indexOfDelimiter)])
-                return
+                throw CalculatorError.MissingArgument(range: rangeOfToken("^", index: indexOfDelimiter))
             }
         }
     }
     
-    private func eval4(inout result: NSDecimalNumber?)
+    private func eval4(inout result: NSDecimalNumber?) throws
     {
-        eval5(&result)
+        try eval5(&result)
         
         while token == "!"
         {
@@ -384,26 +382,25 @@ public class Calculator: NSObject
                 }
                 else
                 {
-                    error = NSError(domain: "Factorial is defined only for non-negative integers", code:10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfCurrentToken])
-                    return
+                    throw CalculatorError.FactorialFromNegativeNumber(range: self.rangeOfCurrentToken)
                 }
                 
-                getToken()
+                try getToken()
             }
         }
     }
     
-    private func eval5(inout result: NSDecimalNumber?)
+    private func eval5(inout result: NSDecimalNumber?) throws
     {
         var op = ""
         
         if token == "+" || token == "-" // unarry + or -
         {
             op = token
-            getToken()
+            try getToken()
         }
         
-        eval6(&result)
+        try eval6(&result)
         
         if op == "-"
         {
@@ -414,64 +411,51 @@ public class Calculator: NSObject
         }
     }
     
-    private func eval6(inout result: NSDecimalNumber?)
+    private func eval6(inout result: NSDecimalNumber?) throws
     {
         if tokenType == .Function
         {
             let function = token
             let indexOfFunction = index
             
-            getToken()
+            try getToken()
             
             if token != "("
             {
-                error = NSError(domain: "missing open bracket  before \(function) function",
-                    code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression :
-                        rangeOfToken(function, index: indexOfFunction)])
-                return
+                throw CalculatorError.MissingOpenedBracket(range: rangeOfToken(function, index: indexOfFunction))
             }
             openBracketsStack.push(true)
             insideFunctionStack.push(true)
             
-            let params = getParametersForFuction(function, atIndex: indexOfFunction)
-            
-            if (params == nil)
-            {
-                return
-            }
+            let params = try getParametersForFuction(function, atIndex: indexOfFunction)
             
             if token != ")"
             {
-                error = NSError(domain: "missing close bracket ", code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfToken(function + "(", index: indexOfFunction)])
-                return
+                CalculatorError.MissingClosedBracket(range: rangeOfToken(function + "(", index: indexOfFunction))
             }
             
             openBracketsStack.pop()
             insideFunctionStack.pop()
             
-            // try coumput function
-            if let functionResult = delegate?.calculateForCalculator?(self, function: function, params: params!, handleError: { err in self.error = err })
+            // try calculate function FIXEEEEEEEE
+            if let functionResult = delegate?.calculateForCalculator?(self, function: function, params: params, handleError: nil)
             {
                 result = functionResult
-                getToken()
+                try getToken()
             }
             else
             {
-                if error == nil
-                {
-                    error = NSError(domain: "faild coumputed \(function) function", code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfToken(function, index: indexOfFunction)])
-                }
-                return
+                throw CalculatorError.FailedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
             }
             
         }
         else
         {
-            eval7(&result)
+            try eval7(&result)
         }
     }
     
-    private func eval7(inout result: NSDecimalNumber?)
+    private func eval7(inout result: NSDecimalNumber?) throws
     {
         if token == "("
         {
@@ -479,48 +463,45 @@ public class Calculator: NSObject
             
             openBracketsStack.push(true)
             
-            getToken()
-            eval1(&result)
+            try getToken()
+            try eval1(&result)
             
             if token != ")"
             {
-                error = NSError(domain: "missing close bracket", code: 10000, userInfo:
-                    [PublicConstants.RangeOfErrorPartExpression : rangeOfToken("(", index: indexOfOpenBracket)])
-                return
+                throw CalculatorError.MissingClosedBracket(range: rangeOfToken("(", index: indexOfOpenBracket))
             }
             openBracketsStack.pop()
             
-            getToken()
+            try getToken()
         }
         else
         {
-            atom(&result)
+            try atom(&result)
         }
     }
     
-    private func atom(inout result: NSDecimalNumber?)
+    private func atom(inout result: NSDecimalNumber?) throws
     {
         switch(tokenType)
         {
         case .Number:
             result = NSDecimalNumber(string: token)
-            getToken()
+            try getToken()
         case .ConstVariable:
             result = self.dataSource?.constantVariables(self)[token]
-            getToken()
+            try getToken()
         case .Variable:
             if let variable = variables[token]
             {
                 result = variable
-                getToken()
+                try getToken()
             }
             else
             {
-                result = nil
-                error = NSError(domain: "undefine \(self.token) variable", code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfCurrentToken])
+                throw CalculatorError.UndefinedVariable(range: self.rangeOfCurrentToken)
             }
         case .Delimiter:
-            handleDelimiterAtomCase()
+            try handleDelimiterAtomCase()
         case .Error:
             result = nil
         default:
@@ -528,7 +509,7 @@ public class Calculator: NSObject
         }
     }
     
-    private func getParametersForFuction(function: String, atIndex index: Int) -> [NSDecimalNumber]?
+    private func getParametersForFuction(function: String, atIndex index: Int) throws -> [NSDecimalNumber]
     {
         var result = [NSDecimalNumber]()
         
@@ -536,21 +517,16 @@ public class Calculator: NSObject
         {
             var parameter: NSDecimalNumber? = nil
             
-            getToken()
-            eval1(&parameter)
+            try getToken()
+            try eval1(&parameter)
             
-            if parameter != nil && error == nil
+            if parameter != nil
             {
                 result.append(parameter!)
             }
             else
             {
-                if error == nil
-                {
-                    error = NSError(domain: "missing argument into function", code: 10000, userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfToken(function, index: index)])
-                }
-                
-                return nil
+                throw CalculatorError.MissingArgument(range: self.rangeOfToken(function, index: index))
             }
         
         }while token == ","
@@ -560,17 +536,16 @@ public class Calculator: NSObject
     
     
     // MARK:- supported methods
-    private func handleDelimiterAtomCase()
-    {
-        switch(token)
-        {
+    private func handleDelimiterAtomCase() throws {
+        switch(token) {
         case ")" where !openBracketsStack.isEmpty:
             break
         case "," where !insideFunctionStack.isEmpty:
             break
+        case ")": // closed bracket without open bracket
+            throw CalculatorError.MissingOpenedBracket(range: self.rangeOfCurrentToken)
         default:
-            error = NSError(domain: "uncorrect use \(token) delimiter", code: 10000,
-                userInfo: [PublicConstants.RangeOfErrorPartExpression : rangeOfCurrentToken])
+            throw CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(range: self.rangeOfCurrentToken)
         }
     }
     private var isTokenConstVariable: Bool {
@@ -588,15 +563,16 @@ public class Calculator: NSObject
         return false
     }
     
-    private func rangeOfToken(token: String, index: Int) -> NSRange
+    private func rangeOfToken(token: String, index: Int) -> Range<Int>
     {
         let distance = token.length
         let location =  index - (distance)
         
-        return NSMakeRange(location, distance)
+        return location..<location + distance
+        //return NSMakeRange(location, distance)
     }
     
-    private var rangeOfCurrentToken: NSRange
+    private var rangeOfCurrentToken: Range<Int>
     {
         return rangeOfToken(token, index: index)
     }

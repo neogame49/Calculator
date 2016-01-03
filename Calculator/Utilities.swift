@@ -39,6 +39,11 @@ public extension String
     {
         return self[self.startIndex.advancedBy(i)]
     }
+    subscript (range: Range<Int>) -> String {
+        let start = self.startIndex.advancedBy(range.startIndex)
+        let end = startIndex.advancedBy(range.endIndex - 1)
+        return self.substringWithRange(start...end)
+    }
     
 }
 

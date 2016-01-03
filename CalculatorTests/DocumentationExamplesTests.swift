@@ -14,8 +14,7 @@ func getMathExp() -> String {
     return arc4random() % 2 == 0 ? "2+2" : "2+2."
 }
 
-class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDelegate
-{
+class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDelegate {
     //MARK:- CalculatorDataSource
     func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
             return ["Pi": NSDecimalNumber(string: "3.1415926535"),
@@ -72,109 +71,95 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
     }
     
-    override func setUp()
-    {
+    override func setUp() {
         super.setUp()
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         super.tearDown()
     }
     
-    func testOne()
-    {
+    func testOne() {
         let mathExp = getMathExp() // String type
         let calculator = Calculator()
         calculator.expression = mathExp
-        let response = calculator.eval()
         
-        if let result = response.result
-        {
+        do {
+            let result = try calculator.eval()
             print(result)
-            // do some stuff with result (NSDecimalNumber type)
+            
+        } catch {
+            // Hanlde calculator error
         }
-        else
-        {
-            let error = response.error!
-            print(error.domain)
-            // do stuff with error (NSError type)
-        }
-    
     }
     
-    func testTwo()
-    {
+    func testTwo() {
         let calculator = Calculator()
         
         calculator.expression = "2+2"
-        print(calculator.eval().result!) // print "4"
+        print(try! calculator.eval()) // print "4"
         
         calculator.expression = "2^3 - 6*3"
-        print(calculator.eval().result!) // print "-10"
+        print(try! calculator.eval()) // print "-10"
         
         calculator.expression = "45 + 25/5 - 5!"
-        print(calculator.eval().result!) // print "-70"
+        print(try! calculator.eval()) // print "-70"
         
         calculator.expression = " (2+2)*2 + (10* -3)"
-        print(calculator.eval().result!) // print "-22"
+        print(try! calculator.eval()) // print "-22"
         
         calculator.expression = " 1 / 5 + 0.005"
-        print(calculator.eval().result!) // print "0.205"
+        print(try! calculator.eval()) // print "0.205"
 
         
     }
     
-    func testThere()
-    {
+    func testThere() {
         let calculator = Calculator()
         calculator.dataSource = self
         calculator.delegate = self
         
         calculator.expression = "Pi + Pi"
-        print(calculator.eval().result!) // print "6.283185307"
+        print(try! calculator.eval()) // print "6.283185307"
         
         calculator.expression = "25 + e^2"
-        print(calculator.eval().result!) // print "32.38905609860964864"
-        
-        
-        
+        print(try! calculator.eval()) // print "32.38905609860964864"
     }
-    func testFourty()
-    {
+    
+    func testFourty() {
         let calculator = Calculator()
         calculator.dataSource = self
         calculator.delegate = self
 
         calculator.expression = "2 + cos(0)"
-        print(calculator.eval().result!) // print "3"
+        print(try! calculator.eval()) // print "3"
         
         calculator.expression = "max(2^5, 5!) + min(23, 45/2)"
-        print(calculator.eval().result!) // print "142.5"
+        print(try! calculator.eval()) // print "142.5"
         
         
         
     }
-    func testFivety()
-    {
+    
+    func testFivety() {
         let calculator = Calculator()
         calculator.dataSource = self
         calculator.delegate = self
         
         calculator.expression = "a = 2"
-        print(calculator.eval().result!) // print "2"
+        print(try! calculator.eval()) // print "2"
         
         calculator.expression = "b = 2 + 2"
-        print(calculator.eval().result!) // print "4"
+        print(try! calculator.eval()) // print "4"
         
         calculator.expression = "c = b - a"
-        print(calculator.eval().result!) // print "2"
+        print(try! calculator.eval()) // print "2"
         
         calculator.expression = " b! - c"
-        print(calculator.eval().result!) // print "22"
+        print(try! calculator.eval()) // print "22"
         
         calculator.expression = "c = c^3"
-        print(calculator.eval().result!) // print "8"
+        print(try! calculator.eval()) // print "8"
         
         calculator.cacheVariablesIfNeeded() // manualy cache variables
         
@@ -186,17 +171,13 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
         let mathExp = "2..2 - 2"
         calculator.expression = mathExp
-        let response = calculator.eval()
         
-        if let error = response.error
-        {
-            print(error.domain)
-            
-            if let rangeOfWrongPart =  error.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-            {
-                let wrongPart = (mathExp as NSString).substringWithRange(rangeOfWrongPart)
-                print(wrongPart) // print "2..2"
-            }
+        do {
+            let _ = try calculator.eval()
+        } catch CalculatorError.WrongFormatOfNumber(let errorRange) {
+            print(mathExp[errorRange])
+        } catch {
+            // any else errors
         }
     }
 }

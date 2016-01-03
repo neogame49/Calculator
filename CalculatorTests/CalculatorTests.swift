@@ -99,225 +99,227 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
     func testSimpleAddCase()
     {
         self.calculator.expression = "2+2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleAddCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleAddCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "4"), "not equal get result with etalon result in SimpleAddCase")
-        
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "4"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleSubCase()
     {
         self.calculator.expression = "4-2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleSubCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleSubCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "2"), "not equal get result with etalon result in SimpleSubCase")
-        
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "2"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     func testSubWithMinusCase()
     {
         self.calculator.expression = "2-4"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SubWithMinusCase ")
-        XCTAssertNil(result.error, "not nil error in SubWithMinusCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "-2"), "not equal get result with etalon result in SubWithMinusCase")
-        
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "-2"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleMulCase()
     {
         self.calculator.expression = "3*3"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleMulCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleMulCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "9"), "not equal get result with etalon result in SimpleMulCase")
-        
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleDivCase()
     {
         self.calculator.expression = "6/2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleDivCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleDivCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "3"), "not equal get result with etalon result in SimpleDivCase")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "3"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleRasingToPowerCase()
     {
         self.calculator.expression = "3^2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in RasingToPowerCase ")
-        XCTAssertNil(result.error, "not nil error in RasingToPowerCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "9"), "not equal get result with etalon result in RasingToPowerCase")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleFactorialCase()
     {
         self.calculator.expression = "5!"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleFactorialCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleFactorialCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "120"), "not equal get result with etalon result in SimpleFactorialCase")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "120"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleUnarryPlusCase()
     {
         self.calculator.expression = "+5-3"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleUnarryPlusCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleUnarryPlusCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "2"), "not equal get result with etalon result in SimpleUnarryPlusCase")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "2"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleUnarryMinusCase()
     {
         self.calculator.expression = "-5+3"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleUnarryMinusCase ")
-        XCTAssertNil(result.error, "not nil error in SimpleUnarryMinusCase")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "-2"), "not equal get result with etalon result in SimpleUnarryMinusCase")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "-2"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testLongResult()
     {
         self.calculator.expression = "1000000*1000000"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in LongResult ")
-        XCTAssertNil(result.error, "not nil error in LongResult")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "1000000000000"), "not equal get result with etalon result in LongResult")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "1000000000000"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occurs")
+        }
     }
     
     func testSimpleMultipleOperations()
     {
         self.calculator.expression = "2+2*2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleMultipleOperations ")
-        XCTAssertNil(result.error, "not nil error in SimpleMultipleOperations")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "6"), "not equal get result with etalon result in SimpleMultipleOperations")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "6"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSimpleMultipleOperationsWithBrackets()
     {
         self.calculator.expression = "(2+2)*2"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SimpleMultipleOperationsWithBrackets ")
-        XCTAssertNil(result.error, "not nil error in SimpleMultipleOperationsWithBrackets")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "8"), "not equal get result with etalon result in SimpleMultipleOperationsWithBrackets")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "8"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testExpresionWithWhiteSpaces()
     {
         self.calculator.expression = "10  + 5 -      6"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in ExpresionWithWhiteSpaces ")
-        XCTAssertNil(result.error, "not nil error in ExpresionWithWhiteSpaces")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "9"), "not equal get result with etalon result in ExpresionWithWhiteSpaces")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSingleNumber()
     {
         self.calculator.expression = "85"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SingleNumber ")
-        XCTAssertNil(result.error, "not nil error in SingleNumber")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "85"), "not equal get result with etalon result in SingleNumber")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "85"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testSingleConstVariable()
     {
         self.calculator.expression = "Pi"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SingleConstVariable ")
-        XCTAssertNil(result.error, "not nil error in SingleConstVariable")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "3.14"), "not equal get result with etalon result in SingleConstVariable")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "3.14"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
     func testExpresionWihtConstVariables()
     {
         self.calculator.expression = "Pi + exp^2 - 3"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in SingleConstVariable ")
-        XCTAssertNil(result.error, "not nil error in SingleConstVariable")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "7.43"), "not equal get result with etalon result in SingleConstVariable")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "7.43"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
+
     }
     func testCalculateSingleFunctionWithOneArgument1()
     {
         self.calculator.expression = "sin(0)"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in CalculateSingleFunctionWithOneArgument1 ")
-        XCTAssertNil(result.error, "not nil error in CalculateSingleFunctionWithOneArgument1")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "0"), "not equal get result with etalon result in CalculateSingleFunctionWithOneArgument1")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "0"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
+
     }
     func testCalculateSingleFunctionWithTwoArgument1()
     {
         self.calculator.expression = "max(2,5)"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in CalculateSingleFunctionWithTwoArgument1 ")
-        XCTAssertNil(result.error, "not nil error in CalculateSingleFunctionWithTwoArgument1")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "5"), "not equal get result with etalon result in CalculateSingleFunctionWithTwoArgument1")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "5"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
+
     }
     func testCalculateSingleFunctionWithTwoArgument2()
     {
         self.calculator.expression = "min(2,-5)"
-        
-        let result = self.calculator.eval()
-        
-        XCTAssertNotNil(result.result, "nil result in CalculateSingleFunctionWithTwoArgument2 ")
-        XCTAssertNil(result.error, "not nil error in CalculateSingleFunctionWithTwoArgument2")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "-5"), "not equal get result with etalon result in CalculateSingleFunctionWithTwoArgument2")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "-5"), "retrieved result doesn't equal to etalon result")
+        }  catch {
+            XCTFail("error has occured")
+        }
+
     }
     func testCalculateExpresionWithAsignedVariable()
     {
         let varName = "var"
         self.calculator.expression = "\(varName)=2+2"
-        
-        let result = self.calculator.eval()
-        calculator.cacheVariablesIfNeeded()
-        
-        XCTAssertNotNil(result.result, "nil result in CalculateExpresionWithAsignedVariable ")
-        XCTAssertNil(result.error, "not nil error in CalculateExpresionWithAsignedVariable")
-        XCTAssertEqual(result.result!, NSDecimalNumber(string: "4"), "not equal get result with etalon result in CalculateExpresionWithAsignedVariable")
-        XCTAssert(!cachedVariables.isEmpty, "Failed cache in CalculateExpresionWithAsignedVariable case")
-        XCTAssertEqual(cachedVariables[varName]!, NSDecimalNumber(string: "4"),
-            "Wrong cached value into \(varName) variable in CalculateExpresionWithAsignedVariable case")
+        do {
+            let result = try self.calculator.eval()
+            XCTAssertEqual(result, NSDecimalNumber(string: "4"), "retrieved result doesn't equal to etalon result")
+            
+            calculator.cacheVariablesIfNeeded()
+            XCTAssert(!self.cachedVariables.isEmpty, "Failed cache ")
+            XCTAssertEqual(cachedVariables[varName]!, NSDecimalNumber(string: "4"),
+                "Wrong cached value into \(varName) variable")
+
+        }  catch {
+            XCTFail("error has occured")
+        }
     }
     
 }

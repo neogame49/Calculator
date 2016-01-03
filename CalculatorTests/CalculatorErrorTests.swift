@@ -89,285 +89,192 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
     func testErrorNumberFormarCase()
     {
         calculator.expression = "2.2.2+2..2"
-        
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorNumberFormarCase")
-        XCTAssertNotNil(result.error, "nil error in ErrorNumberFormarCase")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorNumberFormarCase")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorNumberFormarCase")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 5)),
-            "uncorrect rangeOfErrorPart in ErrorNumberFormarCase")
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.WrongFormatOfNumber(let errorRange) {
+            XCTAssertEqual(errorRange, 0..<5, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorMissingCloseBracket()
     {
         calculator.expression = "2+(2+2"
-        
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorMissingCloseBracket")
-        XCTAssertNotNil(result.error, "nil error in ErrorMissingCloseBracket")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorMissingCloseBracket")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorMissingCloseBracket")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
-            "uncorrect rangeOfErrorPart in ErrorMissingCloseBracket")
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.MissingClosedBracket(let errorRange) {
+            XCTAssertEqual(errorRange, 2..<3, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorMissingOpenBracket()
     {
         calculator.expression = "2+2+2)"
-        
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorMissingOpenBracket")
-        XCTAssertNotNil(result.error, "nil error in ErrorMissingOpenBracket")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorMissingOpenBracket")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorMissingOpenBracket")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(5, 1)),
-            "uncorrect rangeOfErrorPart in ErrorMissingOpenBracket")
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.MissingOpenedBracket(let errorRange) {
+            XCTAssertEqual(errorRange, 5..<6, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorTryToUseUndefineVariables()
     {
         calculator.expression = "2 - undefVar1 + undefVar2"
-        
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorTryToUseUndefineVariables")
-        XCTAssertNotNil(result.error, "nil error in ErrorTryToUseUndefineVariables")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryToUseUndefineVariables")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryToUseUndefineVariables")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(4, 9)),
-            "uncorrect rangeOfErrorPart in ErrorTryToUseUndefineVariables")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefinedVariable(let errorRange) {
+            XCTAssertEqual(errorRange, 4..<13, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorTryToComputedUndefineFunction()
     {
         calculator.expression = "undefFunc(2)"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorTryToComputedUndefineFunction")
-        XCTAssertNotNil(result.error, "nil error in ErrorTryToComputedUndefineFunction")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryToComputedUndefineFunction")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryToComputedUndefineFunction")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 9)),
-            "uncorrect rangeOfErrorPart in ErrorTryToComputedUndefineFunction")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefinedVariable(let errorRange) {
+            XCTAssertEqual(errorRange, 0..<9, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorExpresionWithUndefineSumbols()
     {
         calculator.expression = "2?2@5"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorExpresionWithUndefineSumbols")
-        XCTAssertNotNil(result.error, "nil error in ErrorExpresionWithUndefineSumbols")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorExpresionWithUndefineSumbols")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorExpresionWithUndefineSumbols")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(1, 1)),
-            "uncorrect rangeOfErrorPart in ErrorExpresionWithUndefineSumbols")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+            XCTAssertEqual(errorRange, 1..<2, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
     
     func testErrorToMuchUnaryOperators()
     {
         calculator.expression = "2+ --3+ +++4"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorToMuchUnaryOperators")
-        XCTAssertNotNil(result.error, "nil error in ErrorToMuchUnaryOperators")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorToMuchUnaryOperators")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorToMuchUnaryOperators")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(4, 1)),
-            "uncorrect rangeOfErrorPart in ErrorToMuchUnaryOperators")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+            XCTAssertEqual(errorRange, 4..<5, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testErrorDivByZero()
     {
         calculator.expression = "2/(2-2)"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorDivByZero")
-        XCTAssertNotNil(result.error, "nil error in ErrorDivByZero")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorDivByZero")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorDivByZero")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(1, 1)),
-            "uncorrect rangeOfErrorPart in ErrorDivByZero")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.DivByZero(let errorRange) {
+            XCTAssertEqual(errorRange, 1..<2, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
+    
     func testMissingSecondOperand()
     {
         calculator.expression = "2^2^"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in MissingSecondOperand")
-        XCTAssertNotNil(result.error, "nil error in MissingSecondOperand")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in MissingSecondOperand")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in MissingSecondOperand")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(3, 1)),
-            "uncorrect rangeOfErrorPart in MissingSecondOperand")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.MissingArgument(let errorRange) {
+            XCTAssertEqual(errorRange, 3..<4, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
     
     func testErrorCommaOutsideOfFunction()
     {
         calculator.expression = "max(2,Pi),"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorCommaOutsideOfFunction")
-        XCTAssertNotNil(result.error, "nil error in ErrorCommaOutsideOfFunction")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorCommaOutsideOfFunction")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorCommaOutsideOfFunction")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(9, 1)),
-            "uncorrect rangeOfErrorPart in ErrorCommaOutsideOfFunction")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+            XCTAssertEqual(errorRange, 9..<10, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
-    func testErrorMissingArgumentIntoFunction()
+    
+    func testErrorMissingArgumentInsideOfFunction()
     {
         calculator.expression = "max(2,)"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in MissingArgumentIntoFunction")
-        XCTAssertNotNil(result.error, "nil error in MissingArgumentIntoFunction")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in MissingArgumentIntoFunction")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in MissingArgumentIntoFunction")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 3)),
-            "uncorrect rangeOfErrorPart in MissingArgumentIntoFunction")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.MissingArgument(let errorRange) {
+            XCTAssertEqual(errorRange, 0..<3, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
     
     func testErrorTryAssignedValueToConstant()
     {
         calculator.expression = "Pi=5"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorTryAssignedValueToConstant")
-        XCTAssertNotNil(result.error, "nil error in ErrorTryAssignedValueToConstant")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryAssignedValueToConstant")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryAssignedValueToConstant")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
-            "uncorrect rangeOfErrorPart in ErrorTryAssignedValueToConstant")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+            XCTAssertEqual(errorRange, 2..<3, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
     
     func testErrorNotPrefixUnaryDelimiterToAForwardExpresion()
     {
         calculator.expression = "!3*4"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
-        XCTAssertNotNil(result.error, "nil error in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(0, 1)),
-            "uncorrect rangeOfErrorPart in ErrorNotPrefixUnaryDelimiterToAForwardExpresion")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+            XCTAssertEqual(errorRange, 0..<1, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
     
     func testErrorTryComputeFactorialFromNegativeNumber()
     {
         calculator.expression = "-5!"
         
-        let result = calculator.eval()
-        
-        XCTAssertNil(result.result, "not nil result in ErrorTryComputeFactorialFromNegativeNumber")
-        XCTAssertNotNil(result.error, "nil error in ErrorTryComputeFactorialFromNegativeNumber")
-        XCTAssertNotNil(result.error!.userInfo, "nil error userInfo in ErrorTryComputeFactorialFromNegativeNumber")
-        
-        let rangeOfErrorPart = result.error?.userInfo[Calculator.PublicConstants.RangeOfErrorPartExpression] as? NSRange
-        
-        XCTAssertNotNil(rangeOfErrorPart, "nil error userInfo rangeOfErrorPart in ErrorTryComputeFactorialFromNegativeNumber")
-        XCTAssert( NSEqualRanges(rangeOfErrorPart!, NSMakeRange(2, 1)),
-            "uncorrect rangeOfErrorPart in ErrorTryComputeFactorialFromNegativeNumber")
-        
-        
-        print(result.error!.domain)
-        
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.FactorialFromNegativeNumber(let errorRange) {
+            XCTAssertEqual(errorRange, 2..<3, "wrong error range")
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
     }
-    
-    
 }
