@@ -34,9 +34,9 @@ public extension CalculatorDelegate {
     func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber])
         throws -> NSDecimalNumber {
         /* Since you provided indentifiers for functions which can be calculated via 'functions:' method of the CalculatorDataSource, but didn't implement logic for calculation them via this *method. Default implementation throws error.*/
-        throw NSError(domain: "default implementation cant't calculate any functions", code: 100, userInfo: nil)
+        throw NSError(domain: "default implementation can't calculate any functions", code: 100, userInfo: nil)
     }
-    // Default implementation do nothing.
+    // Default implementation does nothing.
     func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber]) {}
 
 }

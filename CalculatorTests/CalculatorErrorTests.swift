@@ -12,55 +12,10 @@ import Calculator
 
 @testable import Calculator
 
-class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDelegate
-{
+class CalculatorTestsErrorCases: XCTestCase {
     var calculator: Calculator!
     
-    // MARK:- CalculatorDataSource
-    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
-            return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
-    }
-    
-    func functions(calculator: Calculator) -> Set<String> {
-            return ["sin","cos","max","min"]
-    }
-    
-    // MARK:- CalculatorDelegate
-    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
-        switch(function)
-        {
-        case "sin":
-            if params.count != 1
-            {
-                throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: sin(params.first!.doubleValue))
-        case "cos":
-            if params.count != 1
-            {
-                throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: cos(params.first!.doubleValue))
-        case "max":
-            if params.count != 2
-            {
-                throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
-        case "min":
-            if params.count != 2
-            {
-                throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
-        default:
-            throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
-        }
-        
-    }
-    
-    override func setUp()
-    {
+       override func setUp() {
         super.setUp()
         
         calculator = Calculator(expression: "")
@@ -69,13 +24,11 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         calculator.delegate = self
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         super.tearDown()
     }
     
-    func testErrorNumberFormarCase()
-    {
+    func testErrorNumberFormarCase() {
         calculator.expression = "2.2.2+2..2"
         do {
             let _ = try calculator.eval()
@@ -87,9 +40,9 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorMissingCloseBracket()
-    {
+    func testErrorMissingCloseBracket() {
         calculator.expression = "2+(2+2"
+        
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
@@ -100,9 +53,9 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorMissingOpenBracket()
-    {
+    func testErrorMissingOpenBracket() {
         calculator.expression = "2+2+2)"
+        
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
@@ -113,9 +66,9 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorTryToUseUndefineVariables()
-    {
+    func testErrorTryToUseUndefineVariables() {
         calculator.expression = "2 - undefVar1 + undefVar2"
+        
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
@@ -126,8 +79,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorTryToComputedUndefineFunction()
-    {
+    func testErrorTryToComputedUndefineFunction() {
         calculator.expression = "undefFunc(2)"
         
         do {
@@ -140,8 +92,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorExpresionWithUndefineSumbols()
-    {
+    func testErrorExpresionWithUndefineSumbols() {
         calculator.expression = "2?2@5"
         
         do {
@@ -154,8 +105,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorToMuchUnaryOperators()
-    {
+    func testErrorToMuchUnaryOperators() {
         calculator.expression = "2+ --3+ +++4"
         
         do {
@@ -168,8 +118,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorDivByZero()
-    {
+    func testErrorDivByZero() {
         calculator.expression = "2/(2-2)"
         
         do {
@@ -182,8 +131,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testMissingSecondOperand()
-    {
+    func testMissingSecondOperand() {
         calculator.expression = "2^2^"
         
         do {
@@ -196,8 +144,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorCommaOutsideOfFunction()
-    {
+    func testErrorCommaOutsideOfFunction() {
         calculator.expression = "max(2,Pi),"
         
         do {
@@ -210,8 +157,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorMissingArgumentInsideOfFunction()
-    {
+    func testErrorMissingArgumentInsideOfFunction() {
         calculator.expression = "max(2,)"
         
         do {
@@ -224,8 +170,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorTryAssignedValueToConstant()
-    {
+    func testErrorTryAssignedValueToConstant() {
         calculator.expression = "Pi=5"
         
         do {
@@ -238,8 +183,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorNotPrefixUnaryDelimiterToAForwardExpresion()
-    {
+    func testErrorNotPrefixUnaryDelimiterToAForwardExpresion() {
         calculator.expression = "!3*4"
         
         do {
@@ -252,8 +196,7 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         }
     }
     
-    func testErrorTryComputeFactorialFromNegativeNumber()
-    {
+    func testErrorTryComputeFactorialFromNegativeNumber() {
         calculator.expression = "-5!"
         
         do {
@@ -264,5 +207,47 @@ class CalculatorTestsErrorCases: XCTestCase, CalculatorDataSource, CalculatorDel
         } catch {
             XCTFail("incorrect type of calculator error")
         }
+    }
+}
+
+// MARK:- CalculatorDataSource
+extension CalculatorTestsErrorCases : CalculatorDataSource {
+    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
+        return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
+    }
+    
+    func functions(calculator: Calculator) -> Set<String> {
+        return ["sin","cos","max","min"]
+    }
+}
+
+// MARK:- CalculatorDelegate
+extension CalculatorTestsErrorCases: CalculatorDelegate {
+    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
+        switch(function) {
+        case "sin":
+            if params.count != 1 {
+                throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: sin(params.first!.doubleValue))
+        case "cos":
+            if params.count != 1 {
+                throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: cos(params.first!.doubleValue))
+        case "max":
+            if params.count != 2 {
+                throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
+        case "min":
+            if params.count != 2 {
+                throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
+        default:
+            throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
+        }
+        
     }
 }

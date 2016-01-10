@@ -38,7 +38,7 @@ public enum CalculatorError: ErrorType {
     case UndefineOrIncorectUsedOfTheDelimiter(range: Range<Int>)
 }
 
-public class Calculator: NSObject {
+public class Calculator {
 // MARK:- interface
     weak public var dataSource: CalculatorDataSource?
     weak public var delegate: CalculatorDelegate?
@@ -51,19 +51,27 @@ public class Calculator: NSObject {
     }
     
     /// Stores user's own valiables and them values
-    /// Yo migth add cached before variables before calculation
+    /// You might add cached before variables before calculation
     public var variables = [String: NSDecimalNumber]()
     
+    /// Cache variaables only if new was added or exist changed a value.
+    /// Invoke 'cacheVariablesForCalculator: variables:' method from delegate.
     public func cacheVariablesIfNeeded() {
         if self.needCacheVariables == true {
             self.cacheVariables()
         }
     }
+    
+    /// Force cache exist variaables in any case.
+    /// Invoke 'cacheVariablesForCalculator: variables:' method from delegate.
     public func cacheVariables() {
         self.delegate?.cacheVariablesForCalculator(self, variables: self.variables)
         self.needCacheVariables = false
     }
     
+    /// Calculate math expression which was pass via 'expression' property.
+    /// - returns: NSDecimalNumber instance which contains result.
+    /// - throws: If expression contains mistakes, will be throw CalculatorError error.
     public func eval() throws -> NSDecimalNumber {
         self.resetTokensStuff()
         
@@ -86,7 +94,7 @@ public class Calculator: NSObject {
         self.expression = expression
     }
     
-    public  override init(){ }
+    public init(){ }
     
     deinit {
         cacheVariablesIfNeeded()

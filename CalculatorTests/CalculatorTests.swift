@@ -13,61 +13,9 @@ import Calculator
 @testable import Calculator
 
 // MARK:- Calculator tests
-class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
-{
+class CalculatorTests: XCTestCase {
     var calculator: Calculator!
     var cachedVariables = [String: NSDecimalNumber]()
-    
-    //MARK:- CalculatorDataSource
-    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
-            return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
-    }
-    
-    func functions(calculator: Calculator) -> Set<String> {
-            return ["sin","cos","max","min"]
-    }
-    
-    // MARK:- CalculatorDelegate
-    
-    func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber])
-    {
-        cachedVariables = variables
-        
-    }
-    
-    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
-        switch(function)
-        {
-        case "sin":
-            if params.count != 1
-            {
-                throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: sin(params.first!.doubleValue))
-        case "cos":
-            if params.count != 1
-            {
-                throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: cos(params.first!.doubleValue))
-        case "max":
-            if params.count != 2
-            {
-                throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
-        case "min":
-            if params.count != 2
-            {
-                throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
-            }
-            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
-        default:
-            throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
-        }
-        
-    }
-
     
     override func setUp() {
         super.setUp()
@@ -81,13 +29,12 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testSimpleAddCase()
-    {
+    func testSimpleAddCase() {
         self.calculator.expression = "2+2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "4"), "retrieved result doesn't equal to etalon result")
@@ -96,9 +43,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleSubCase()
-    {
+    func testSimpleSubCase() {
         self.calculator.expression = "4-2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "2"), "retrieved result doesn't equal to etalon result")
@@ -106,9 +53,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
             XCTFail("error has occured")
         }
     }
-    func testSubWithMinusCase()
-    {
+    func testSubWithMinusCase() {
         self.calculator.expression = "2-4"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "-2"), "retrieved result doesn't equal to etalon result")
@@ -117,9 +64,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleMulCase()
-    {
+    func testSimpleMulCase() {
         self.calculator.expression = "3*3"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
@@ -128,9 +75,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleDivCase()
-    {
+    func testSimpleDivCase() {
         self.calculator.expression = "6/2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "3"), "retrieved result doesn't equal to etalon result")
@@ -139,9 +86,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleRasingToPowerCase()
-    {
+    func testSimpleRasingToPowerCase() {
         self.calculator.expression = "3^2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
@@ -150,9 +97,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleFactorialCase()
-    {
+    func testSimpleFactorialCase() {
         self.calculator.expression = "5!"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "120"), "retrieved result doesn't equal to etalon result")
@@ -161,9 +108,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleUnarryPlusCase()
-    {
+    func testSimpleUnarryPlusCase() {
         self.calculator.expression = "+5-3"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "2"), "retrieved result doesn't equal to etalon result")
@@ -172,9 +119,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleUnarryMinusCase()
-    {
+    func testSimpleUnarryMinusCase() {
         self.calculator.expression = "-5+3"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "-2"), "retrieved result doesn't equal to etalon result")
@@ -183,9 +130,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testLongResult()
-    {
+    func testLongResult() {
         self.calculator.expression = "1000000*1000000"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "1000000000000"), "retrieved result doesn't equal to etalon result")
@@ -194,9 +141,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleMultipleOperations()
-    {
+    func testSimpleMultipleOperations() {
         self.calculator.expression = "2+2*2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "6"), "retrieved result doesn't equal to etalon result")
@@ -205,9 +152,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSimpleMultipleOperationsWithBrackets()
-    {
+    func testSimpleMultipleOperationsWithBrackets() {
         self.calculator.expression = "(2+2)*2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "8"), "retrieved result doesn't equal to etalon result")
@@ -216,9 +163,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testExpresionWithWhiteSpaces()
-    {
+    func testExpresionWithWhiteSpaces(){
         self.calculator.expression = "10  + 5 -      6"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "9"), "retrieved result doesn't equal to etalon result")
@@ -227,9 +174,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSingleNumber()
-    {
+    func testSingleNumber() {
         self.calculator.expression = "85"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "85"), "retrieved result doesn't equal to etalon result")
@@ -238,9 +185,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testSingleConstVariable()
-    {
+    func testSingleConstVariable() {
         self.calculator.expression = "Pi"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "3.14"), "retrieved result doesn't equal to etalon result")
@@ -249,9 +196,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
-    func testExpresionWihtConstVariables()
-    {
+    func testExpresionWihtConstVariables() {
         self.calculator.expression = "Pi + exp^2 - 3"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "7.43"), "retrieved result doesn't equal to etalon result")
@@ -260,9 +207,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
 
     }
-    func testCalculateSingleFunctionWithOneArgument1()
-    {
+    func testCalculateSingleFunctionWithOneArgument1() {
         self.calculator.expression = "sin(0)"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "0"), "retrieved result doesn't equal to etalon result")
@@ -271,9 +218,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
 
     }
-    func testCalculateSingleFunctionWithTwoArgument1()
-    {
+    func testCalculateSingleFunctionWithTwoArgument1() {
         self.calculator.expression = "max(2,5)"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "5"), "retrieved result doesn't equal to etalon result")
@@ -282,9 +229,9 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
 
     }
-    func testCalculateSingleFunctionWithTwoArgument2()
-    {
+    func testCalculateSingleFunctionWithTwoArgument2() {
         self.calculator.expression = "min(2,-5)"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "-5"), "retrieved result doesn't equal to etalon result")
@@ -293,10 +240,10 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
 
     }
-    func testCalculateExpresionWithAsignedVariable()
-    {
+    func testCalculateExpresionWithAsignedVariable() {
         let varName = "var"
         self.calculator.expression = "\(varName)=2+2"
+        
         do {
             let result = try self.calculator.eval()
             XCTAssertEqual(result, NSDecimalNumber(string: "4"), "retrieved result doesn't equal to etalon result")
@@ -311,4 +258,50 @@ class CalculatorTests: XCTestCase, CalculatorDataSource, CalculatorDelegate
         }
     }
     
+}
+
+// MARK:- CalculatorDataSource
+extension CalculatorTests : CalculatorDataSource {
+    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
+        return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
+    }
+    
+    func functions(calculator: Calculator) -> Set<String> {
+        return ["sin","cos","max","min"]
+    }
+}
+
+// MARK:- CalculatorDelegate
+extension CalculatorTests: CalculatorDelegate {
+    func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber]) {
+        cachedVariables = variables
+    }
+    
+    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
+        switch(function) {
+        case "sin":
+            if params.count != 1 {
+                throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: sin(params.first!.doubleValue))
+        case "cos":
+            if params.count != 1 {
+                throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: cos(params.first!.doubleValue))
+        case "max":
+            if params.count != 2 {
+                throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
+        case "min":
+            if params.count != 2 {
+                throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
+            }
+            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
+        default:
+            throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
+        }
+        
+    }
 }

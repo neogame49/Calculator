@@ -58,15 +58,6 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         }
         
     }
-
-    
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
     
     func testOne() {
         let mathExp = getMathExp() // String type
@@ -99,8 +90,6 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
         calculator.expression = " 1 / 5 + 0.005"
         print(try! calculator.eval()) // print "0.205"
-
-        
     }
     
     func testThere() {
@@ -125,9 +114,6 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
         calculator.expression = "max(2^5, 5!) + min(23, 45/2)"
         print(try! calculator.eval()) // print "142.5"
-        
-        
-        
     }
     
     func testFivety() {
@@ -154,8 +140,7 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         
     } // calculator instance is destroed, variables cached automatically
     
-    func testSixty()
-    {
+    func testSixty() {
         let calculator = Calculator()
         
         let mathExp = "2..2 - 2"
@@ -164,7 +149,10 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         do {
             let _ = try calculator.eval()
         } catch CalculatorError.WrongFormatOfNumber(let errorRange) {
-            print(mathExp[errorRange])
+            // print wrong part
+            let start = mathExp.startIndex.advancedBy(errorRange.startIndex)
+            let end = mathExp.startIndex.advancedBy(errorRange.endIndex - 1)
+            print(mathExp.substringWithRange(start...end))
         } catch {
             // any else errors
         }
