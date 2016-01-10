@@ -56,7 +56,6 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
         default:
             throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
         }
-        
     }
     
     func testOne() {
@@ -95,7 +94,6 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
     func testThere() {
         let calculator = Calculator()
         calculator.dataSource = self
-        calculator.delegate = self
         
         calculator.expression = "Pi + Pi"
         print(try! calculator.eval()) // print "6.283185307"
@@ -152,7 +150,9 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
             // print wrong part
             let start = mathExp.startIndex.advancedBy(errorRange.startIndex)
             let end = mathExp.startIndex.advancedBy(errorRange.endIndex - 1)
-            print(mathExp.substringWithRange(start...end))
+            
+            let wrongPart = mathExp.substringWithRange(start...end)
+            print(wrongPart)
         } catch {
             // any else errors
         }
