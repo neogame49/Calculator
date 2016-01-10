@@ -28,8 +28,21 @@ class CalculatorTestsErrorCases: XCTestCase {
         super.tearDown()
     }
     
+    func testEmptyExpression() {
+        calculator.expression = ""
+        do {
+            let _ = try calculator.eval()
+            XCTFail("calculator error hasn'n occured")
+        } catch CalculatorError.EmptyExpression {
+            
+        } catch {
+            XCTFail("incorrect type of calculator error")
+        }
+    }
+    
     func testErrorNumberFormarCase() {
         calculator.expression = "2.2.2+2..2"
+        
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
