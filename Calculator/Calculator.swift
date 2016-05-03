@@ -144,7 +144,7 @@ public class Calculator {
         
         while currentSumbol == " "
         {
-            index++
+            index += 1
             if index == endOfExpresion
             {
                 return
@@ -157,14 +157,14 @@ public class Calculator {
         if currentSumbol.isDelimiter {
             token += String(currentSumbol)
             tokenType = .Delimiter
-            index++
+            index += 1
         }
         else if currentSumbol.isDigit {
             tokenType = .Number
 
             while currentSumbol.isDigit || currentSumbol == "." {
                 token += String(currentSumbol)
-                index++
+                index += 1
 
                 if index == endOfExpresion {
                     break
@@ -178,7 +178,7 @@ public class Calculator {
             while currentSumbol.isLettet || currentSumbol == "_" ||
             currentSumbol.isDigit {
                 token += String(currentSumbol)
-                index++
+                index += 1
                 
                 if index == endOfExpresion {
                     break
