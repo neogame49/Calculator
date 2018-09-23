@@ -148,11 +148,10 @@ class DocumentationExamplesTest: XCTestCase, CalculatorDataSource, CalculatorDel
             let _ = try calculator.eval()
         } catch CalculatorError.wrongFormatOfNumber(let errorRange) {
             // print wrong part
-            let mathExpCharacters = mathExp.characters
-            let start = mathExpCharacters.index(mathExpCharacters.startIndex, offsetBy: errorRange.startIndex)
-            let end = mathExpCharacters.index(mathExpCharacters.startIndex, offsetBy: errorRange.endIndex - 1)
+            let start = mathExp.index(mathExp.startIndex, offsetBy: errorRange.startIndex)
+            let end = mathExp.index(mathExp.startIndex, offsetBy: errorRange.endIndex - 1)
             
-            let wrongPart = String(mathExpCharacters[start...end])
+            let wrongPart = mathExp[start...end]
             print(wrongPart)
         } catch {
             // any else errors

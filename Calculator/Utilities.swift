@@ -12,9 +12,7 @@ import Foundation
     public var isDelimiter: Bool {
             let valiidDelimiters = "+-*/!()=^,"
             let validationSet = CharacterSet(charactersIn: valiidDelimiters)
-        // FIXME: 
-        //return validationSet.isSuperset(of: CharacterSet(charactersIn: String(self)))
-            return valiidDelimiters.contains(String(self))
+        return validationSet.isSuperset(of: CharacterSet(charactersIn: String(self)))
     }
     
     var isLettet: Bool {
@@ -27,7 +25,7 @@ import Foundation
 // MARK:- String utilities
 public extension String {
     subscript (i: Int) -> Character {
-        return self[self.characters.index(self.startIndex, offsetBy: i)]
+        return self[self.index(self.startIndex, offsetBy: i)]
     }
 }
 
@@ -117,6 +115,6 @@ private func factorial(_ value: Int) -> Int {
 // MARK:- string extension
 extension String {
     var length: Int {
-        return self.characters.underestimatedCount
+        return self.count
     }
 }
