@@ -8,8 +8,7 @@
 
 import Foundation
 import XCTest
-
-
+@testable import Calculator
 
 // MARK:- Character Utilities test
 class CharacterUtilitiesTest: XCTestCase

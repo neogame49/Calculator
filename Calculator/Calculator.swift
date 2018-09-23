@@ -7,44 +7,44 @@
 //
 
 // MARK:- Error part
-public enum CalculatorError: ErrorType {
-    case EmptyExpression
+public enum CalculatorError: Error {
+    case emptyExpression
     /// Occurs when user passed number like '2.', '2..25' etc.
     /// Also attached range of wrong part of expression.
-    case WrongFormatOfNumber(range: Range<Int>)
+    case wrongFormatOfNumber(range: CountableRange<Int>)
     /// Occurs when user missed required argument like '2+', 'max(2, )' etc.
     /// Also attached range of  part of expression before missing.
-    case MissingArgument(range: Range<Int>)
+    case missingArgument(range: CountableRange<Int>)
     /// Occurs when user tried div by zero.
     /// Also attached range of  part of expression before missing.
-    case DivByZero(range: Range<Int>)
+    case divByZero(range: CountableRange<Int>)
     /// Occurs when user tried  get factorial from negative number.
     /// Also attached range of wrong part of expression.
-    case FactorialFromNegativeNumber(range: Range<Int>)
+    case factorialFromNegativeNumber(range: CountableRange<Int>)
     /// Occurs when user typed close bracket without opening bracket before.
     /// Also attached range of wrong part of expression.
-    case MissingOpenedBracket(range: Range<Int>)
+    case missingOpenedBracket(range: CountableRange<Int>)
     /// Occurs when user didn't type close bracket and opened bracket before.
     /// Also attached range of wrong part of expression.
-    case MissingClosedBracket(range: Range<Int>)
+    case missingClosedBracket(range: CountableRange<Int>)
     /// Occurs when delegate method ... throws error during trying calculate function.
     /// Also attached range of wrong part of expression.
-    case FailedComputedOfFunction(range: Range<Int>)
+    case failedComputedOfFunction(range: CountableRange<Int>)
     /// Occurs user try use in experession undefined variable( it absent into variables array).
     /// Also attached range of wrong part of expression.
-    case UndefinedVariable(range: Range<Int>)
+    case undefinedVariable(range: CountableRange<Int>)
     /// Occurs when user passed undefined delimeter or it used is incorect like '2?2', '2++25' etc.
     /// Also attached range of wrong part of expression.
-    case UndefineOrIncorectUsedOfTheDelimiter(range: Range<Int>)
+    case undefineOrIncorectUsedOfTheDelimiter(range: CountableRange<Int>)
 }
 
-public class Calculator {
+open class Calculator {
 // MARK:- interface
-    weak public var dataSource: CalculatorDataSource?
-    weak public var delegate: CalculatorDelegate?
+    weak open var dataSource: CalculatorDataSource?
+    weak open var delegate: CalculatorDelegate?
     
     /// math expression for calculation
-    public var expression = "" {
+    open var expression = "" {
         didSet {
             self.resetTokensStuff()
         }
@@ -52,11 +52,11 @@ public class Calculator {
     
     /// Stores user's own valiables and them values
     /// You might add cached before variables before calculation
-    public var variables = [String: NSDecimalNumber]()
+    open var variables = [String: NSDecimalNumber]()
     
     /// Cache variaables only if new was added or exist changed a value.
     /// Invoke 'cacheVariablesForCalculator: variables:' method from delegate.
-    public func cacheVariablesIfNeeded() {
+    open func cacheVariablesIfNeeded() {
         if self.needCacheVariables == true {
             self.cacheVariables()
         }
@@ -64,7 +64,7 @@ public class Calculator {
     
     /// Force cache exist variaables in any case.
     /// Invoke 'cacheVariablesForCalculator: variables:' method from delegate.
-    public func cacheVariables() {
+    open func cacheVariables() {
         self.delegate?.cacheVariablesForCalculator(self, variables: self.variables)
         self.needCacheVariables = false
     }
@@ -72,7 +72,7 @@ public class Calculator {
     /// Calculate math expression which was pass via 'expression' property.
     /// - returns: NSDecimalNumber instance which contains result.
     /// - throws: If expression contains mistakes, will be throw CalculatorError error.
-    public func eval() throws -> NSDecimalNumber {
+    open func eval() throws -> NSDecimalNumber {
         self.resetTokensStuff()
         
         var result: NSDecimalNumber? = nil
@@ -80,11 +80,11 @@ public class Calculator {
         try getToken()
         try eval0(&result)
         
-        if  tokenType == .Delimiter { // incorrect used delimiter
+        if  tokenType == .delimiter { // incorrect used delimiter
             try handleDelimiterAtomCase()
         }
         
-        guard let finalResult = result else { throw CalculatorError.EmptyExpression}
+        guard let finalResult = result else { throw CalculatorError.emptyExpression}
         
         return finalResult
     }
@@ -104,38 +104,38 @@ public class Calculator {
     
     // MARK:- implimetantion, private section
     
-    private enum TokenType {
-        case Delimiter
-        case Number
-        case ConstVariable
-        case Variable
-        case Function
-        case None     // none type
+    fileprivate enum TokenType {
+        case delimiter
+        case number
+        case constVariable
+        case variable
+        case function
+        case none     // none type
     }
     
-    private var token = ""
-    private var tokenType = TokenType.None
-    private var index = 0
+    fileprivate var token = ""
+    fileprivate var tokenType = TokenType.none
+    fileprivate var index = 0
  
-    private func resetTokensStuff() {
+    fileprivate func resetTokensStuff() {
         self.cacheVariablesIfNeeded()
         token = ""
-        tokenType = .None
+        tokenType = .none
         index = 0
     }
-    private var needCacheVariables = false
+    fileprivate var needCacheVariables = false
     
-    private var openBracketsStack = Stack<Bool>()
-    private var insideFunctionStack = Stack<Bool>()
+    fileprivate var openBracketsStack = Stack<Bool>()
+    fileprivate var insideFunctionStack = Stack<Bool>()
 
     
-    private var endOfExpresion : Int {
+    fileprivate var endOfExpresion : Int {
         return expression.length
     }
     
-    private func getToken() throws {
+    fileprivate func getToken() throws {
         token = ""
-        tokenType = .None
+        tokenType = .none
         
         if index == endOfExpresion {
             return
@@ -156,11 +156,11 @@ public class Calculator {
         
         if currentSumbol.isDelimiter {
             token += String(currentSumbol)
-            tokenType = .Delimiter
+            tokenType = .delimiter
             index += 1
         }
         else if currentSumbol.isDigit {
-            tokenType = .Number
+            tokenType = .number
 
             while currentSumbol.isDigit || currentSumbol == "." {
                 token += String(currentSumbol)
@@ -173,7 +173,7 @@ public class Calculator {
             }
         }
         else if currentSumbol.isLettet || currentSumbol == "_" {
-            tokenType = .Variable
+            tokenType = .variable
             
             while currentSumbol.isLettet || currentSumbol == "_" ||
             currentSumbol.isDigit {
@@ -187,26 +187,26 @@ public class Calculator {
             }
         }
         else {
-            throw CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(range: rangeOfToken(String(currentSumbol), index: index+1))
+            throw CalculatorError.undefineOrIncorectUsedOfTheDelimiter(range: rangeOfToken(String(currentSumbol), index: index+1))
         }
         
         let paternForNumber = "(?<=^| )\\d+(\\.\\d+)?(?=$| )" // only case like 1 or 1.2
-        if tokenType == .Number && !(token =~ paternForNumber) {
-            throw CalculatorError.WrongFormatOfNumber(range: rangeOfCurrentToken)
+        if tokenType == .number && !(token =~ paternForNumber) {
+            throw CalculatorError.wrongFormatOfNumber(range: rangeOfCurrentToken)
         }
         
-        if tokenType == .Variable {
+        if tokenType == .variable {
             if isTokenConstVariable {
-                tokenType = .ConstVariable
+                tokenType = .constVariable
             }
             else if isTokenFunction {
-                tokenType = .Function
+                tokenType = .function
             }
         }
     }
     // MARK:- calculate methods
-    private func eval0(inout result: NSDecimalNumber?) throws {
-        if tokenType == .Variable {
+    fileprivate func eval0(_ result: inout NSDecimalNumber?) throws {
+        if tokenType == .variable {
             let tempToken = token
             try getToken()
             
@@ -228,7 +228,7 @@ public class Calculator {
         
         try eval1(&result)
     }
-    private func eval1(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval1(_ result: inout NSDecimalNumber?) throws {
         try eval2(&result)
         
         var op = token
@@ -242,7 +242,7 @@ public class Calculator {
             
             guard let firstOperand = result else { return }
             guard let secondOperand = tempValue else {
-                throw CalculatorError.MissingArgument(range: rangeOfToken(op, index: indexOfOp))
+                throw CalculatorError.missingArgument(range: rangeOfToken(op, index: indexOfOp))
             }
             
             switch op {
@@ -259,7 +259,7 @@ public class Calculator {
         }
     }
     
-    private func eval2(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval2(_ result: inout NSDecimalNumber?) throws {
         try eval3(&result)
         
         var op = token
@@ -273,7 +273,7 @@ public class Calculator {
             
             guard let firstOperand = result else { return }
             guard let secondOperand = tempValue else {
-                throw CalculatorError.MissingArgument(range: rangeOfToken(op, index: indexOfOp))
+                throw CalculatorError.missingArgument(range: rangeOfToken(op, index: indexOfOp))
             }
             
             switch op {
@@ -281,7 +281,7 @@ public class Calculator {
                 result = firstOperand * secondOperand
             case "/":
                 if secondOperand == NSDecimalNumber(string: "0") { // div by zero case
-                    throw CalculatorError.DivByZero(range: rangeOfToken(op, index: indexOfOp))
+                    throw CalculatorError.divByZero(range: rangeOfToken(op, index: indexOfOp))
                 }
                 else {
                     result = firstOperand / secondOperand
@@ -295,7 +295,7 @@ public class Calculator {
         }
     }
     
-    private func eval3(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval3(_ result: inout NSDecimalNumber?) throws {
         try eval4(&result)
         
         let indexOfDelimiter = index
@@ -308,14 +308,14 @@ public class Calculator {
             
             guard let firstOperand = result else { return }
             guard let secondOperand = tempValue else {
-                throw CalculatorError.MissingArgument(range: rangeOfToken("^", index: indexOfDelimiter))
+                throw CalculatorError.missingArgument(range: rangeOfToken("^", index: indexOfDelimiter))
             }
             
             result = firstOperand ^ secondOperand
         }
     }
     
-    private func eval4(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval4(_ result: inout NSDecimalNumber?) throws {
         try eval5(&result)
         
         while token == "!" {
@@ -325,13 +325,13 @@ public class Calculator {
                 result = factorialResult
             }
             else {
-                throw CalculatorError.FactorialFromNegativeNumber(range: self.rangeOfCurrentToken)
+                throw CalculatorError.factorialFromNegativeNumber(range: self.rangeOfCurrentToken)
             }
             try getToken()
         }
     }
     
-    private func eval5(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval5(_ result: inout NSDecimalNumber?) throws {
         var op = ""
         
         if token == "+" || token == "-" { // unarry + or -
@@ -341,13 +341,13 @@ public class Calculator {
         
         try eval6(&result)
         
-        if let singleOperand = result where op == "-" {
+        if let singleOperand = result, op == "-" {
             result = -singleOperand
         }
     }
     
-    private func eval6(inout result: NSDecimalNumber?) throws {
-        guard tokenType == .Function else {
+    fileprivate func eval6(_ result: inout NSDecimalNumber?) throws {
+        guard tokenType == .function else {
             try eval7(&result)
             return
         }
@@ -358,7 +358,7 @@ public class Calculator {
         try getToken()
         
         if token != "(" {
-            throw CalculatorError.MissingOpenedBracket(range: rangeOfToken(function, index: indexOfFunction))
+            throw CalculatorError.missingOpenedBracket(range: rangeOfToken(function, index: indexOfFunction))
         }
         openBracketsStack.push(true)
         insideFunctionStack.push(true)
@@ -366,26 +366,26 @@ public class Calculator {
         let params = try getParametersForFuction(function, atIndex: indexOfFunction)
         
         if token != ")" {
-            CalculatorError.MissingClosedBracket(range: rangeOfToken(function + "(", index: indexOfFunction))
+            throw CalculatorError.missingClosedBracket(range: rangeOfToken(function + "(", index: indexOfFunction))
         }
         
-        openBracketsStack.pop()
-        insideFunctionStack.pop()
+        _ = openBracketsStack.pop()
+        _ = insideFunctionStack.pop()
         
         guard let delegate = self.delegate else {
-            throw CalculatorError.FailedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
+            throw CalculatorError.failedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
         }
         
         do {
             result = try delegate.calculateForCalculator(self, function: function, params: params)
         } catch {
-            throw CalculatorError.FailedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
+            throw CalculatorError.failedComputedOfFunction(range: rangeOfToken(function, index: indexOfFunction))
         }
         
         try getToken()
     }
     
-    private func eval7(inout result: NSDecimalNumber?) throws {
+    fileprivate func eval7(_ result: inout NSDecimalNumber?) throws {
         if token == "(" {
             let indexOfOpenBracket = index
             
@@ -395,9 +395,9 @@ public class Calculator {
             try eval1(&result)
             
             if token != ")" {
-                throw CalculatorError.MissingClosedBracket(range: rangeOfToken("(", index: indexOfOpenBracket))
+                throw CalculatorError.missingClosedBracket(range: rangeOfToken("(", index: indexOfOpenBracket))
             }
-            openBracketsStack.pop()
+            _ = openBracketsStack.pop()
             
             try getToken()
         }
@@ -406,30 +406,30 @@ public class Calculator {
         }
     }
     
-    private func atom(inout result: NSDecimalNumber?) throws {
+    fileprivate func atom(_ result: inout NSDecimalNumber?) throws {
         switch(tokenType) {
-        case .Number:
+        case .number:
             result = NSDecimalNumber(string: token)
             try getToken()
-        case .ConstVariable:
+        case .constVariable:
             result = self.dataSource?.constantVariables(self)[token]
             try getToken()
-        case .Variable:
+        case .variable:
             if let variable = variables[token] {
                 result = variable
                 try getToken()
             }
             else {
-                throw CalculatorError.UndefinedVariable(range: self.rangeOfCurrentToken)
+                throw CalculatorError.undefinedVariable(range: self.rangeOfCurrentToken)
             }
-        case .Delimiter:
+        case .delimiter:
             try handleDelimiterAtomCase()
         default:
             break
         }
     }
     
-    private func getParametersForFuction(function: String, atIndex index: Int) throws -> [NSDecimalNumber] {
+    fileprivate func getParametersForFuction(_ function: String, atIndex index: Int) throws -> [NSDecimalNumber] {
         var result = [NSDecimalNumber]()
         
         repeat {
@@ -441,7 +441,7 @@ public class Calculator {
             if let parameter = parameter {
                 result.append(parameter)
             } else {
-                throw CalculatorError.MissingArgument(range: self.rangeOfToken(function, index: index))
+                throw CalculatorError.missingArgument(range: self.rangeOfToken(function, index: index))
             }
         
         } while token == ","
@@ -451,40 +451,40 @@ public class Calculator {
     
     
     // MARK:- supported methods
-    private func handleDelimiterAtomCase() throws {
+    fileprivate func handleDelimiterAtomCase() throws {
         switch(token) {
         case ")" where !openBracketsStack.isEmpty:
             break
         case "," where !insideFunctionStack.isEmpty:
             break
         case ")": // closed bracket without open bracket
-            throw CalculatorError.MissingOpenedBracket(range: self.rangeOfCurrentToken)
+            throw CalculatorError.missingOpenedBracket(range: self.rangeOfCurrentToken)
         default:
-            throw CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(range: self.rangeOfCurrentToken)
+            throw CalculatorError.undefineOrIncorectUsedOfTheDelimiter(range: self.rangeOfCurrentToken)
         }
     }
-    private var isTokenConstVariable: Bool {
+    fileprivate var isTokenConstVariable: Bool {
         if let constVariables = self.dataSource?.constantVariables(self) {
             return constVariables[self.token] != nil
         }
         return false
     }
     
-    private var isTokenFunction: Bool {
+    fileprivate var isTokenFunction: Bool {
         if let functions = self.dataSource?.functions(self) {
             return functions.contains(token)
         }
         return false
     }
     
-    private func rangeOfToken(token: String, index: Int) -> Range<Int> {
+    fileprivate func rangeOfToken(_ token: String, index: Int) -> CountableRange<Int> {
         let distance = token.length
         let location =  index - (distance)
         
         return location..<location + distance
     }
     
-    private var rangeOfCurrentToken: Range<Int> {
+    fileprivate var rangeOfCurrentToken: CountableRange<Int> {
         return rangeOfToken(token, index: index)
     }
 }

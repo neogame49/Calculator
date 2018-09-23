@@ -8,8 +8,6 @@
 
 import Foundation
 import XCTest
-import Calculator
-
 @testable import Calculator
 
 // MARK:- Calculator tests
@@ -262,43 +260,43 @@ class CalculatorTests: XCTestCase {
 
 // MARK:- CalculatorDataSource
 extension CalculatorTests : CalculatorDataSource {
-    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
+    func constantVariables(_ calculator: Calculator) -> [String: NSDecimalNumber] {
         return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
     }
     
-    func functions(calculator: Calculator) -> Set<String> {
+    func functions(_ calculator: Calculator) -> Set<String> {
         return ["sin","cos","max","min"]
     }
 }
 
 // MARK:- CalculatorDelegate
 extension CalculatorTests: CalculatorDelegate {
-    func cacheVariablesForCalculator(calculator: Calculator, variables: [String: NSDecimalNumber]) {
+    func cacheVariablesForCalculator(_ calculator: Calculator, variables: [String: NSDecimalNumber]) {
         cachedVariables = variables
     }
     
-    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
+    func calculateForCalculator(_ calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
         switch(function) {
         case "sin":
             if params.count != 1 {
                 throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: sin(params.first!.doubleValue))
+            return NSDecimalNumber(value: sin(params.first!.doubleValue) as Double)
         case "cos":
             if params.count != 1 {
                 throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: cos(params.first!.doubleValue))
+            return NSDecimalNumber(value: cos(params.first!.doubleValue) as Double)
         case "max":
             if params.count != 2 {
                 throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
+            return NSDecimalNumber(value: max(params[0].doubleValue, params[1].doubleValue) as Double)
         case "min":
             if params.count != 2 {
                 throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
+            return NSDecimalNumber(value: min(params[0].doubleValue, params[1].doubleValue) as Double)
         default:
             throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
         }

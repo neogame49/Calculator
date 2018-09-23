@@ -9,11 +9,11 @@
 import Foundation
 
 struct Stack<T> {
-    private var items = [T]()
+    fileprivate var items = [T]()
     
     //MARK:- interface
     
-    mutating func push(newItem: T) {
+    mutating func push(_ newItem: T) {
         items.append(newItem)
     }
     
@@ -26,7 +26,7 @@ struct Stack<T> {
     }
     
     mutating func removeAll() {
-        items.removeAll(keepCapacity: false)
+        items.removeAll(keepingCapacity: false)
     }
     
     var count: Int {

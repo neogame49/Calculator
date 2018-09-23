@@ -8,8 +8,6 @@
 
 import Foundation
 import XCTest
-import Calculator
-
 @testable import Calculator
 
 class CalculatorTestsErrorCases: XCTestCase {
@@ -33,7 +31,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.EmptyExpression {
+        } catch CalculatorError.emptyExpression {
             
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -46,7 +44,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.WrongFormatOfNumber(let errorRange) {
+        } catch CalculatorError.wrongFormatOfNumber(let errorRange) {
             XCTAssertEqual(errorRange, 0..<5, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -59,7 +57,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.MissingClosedBracket(let errorRange) {
+        } catch CalculatorError.missingClosedBracket(let errorRange) {
             XCTAssertEqual(errorRange, 2..<3, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -72,7 +70,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.MissingOpenedBracket(let errorRange) {
+        } catch CalculatorError.missingOpenedBracket(let errorRange) {
             XCTAssertEqual(errorRange, 5..<6, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -85,7 +83,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefinedVariable(let errorRange) {
+        } catch CalculatorError.undefinedVariable(let errorRange) {
             XCTAssertEqual(errorRange, 4..<13, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -98,7 +96,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefinedVariable(let errorRange) {
+        } catch CalculatorError.undefinedVariable(let errorRange) {
             XCTAssertEqual(errorRange, 0..<9, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -111,7 +109,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+        } catch CalculatorError.undefineOrIncorectUsedOfTheDelimiter(let errorRange) {
             XCTAssertEqual(errorRange, 1..<2, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -124,7 +122,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+        } catch CalculatorError.undefineOrIncorectUsedOfTheDelimiter(let errorRange) {
             XCTAssertEqual(errorRange, 4..<5, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -137,7 +135,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.DivByZero(let errorRange) {
+        } catch CalculatorError.divByZero(let errorRange) {
             XCTAssertEqual(errorRange, 1..<2, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -150,7 +148,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.MissingArgument(let errorRange) {
+        } catch CalculatorError.missingArgument(let errorRange) {
             XCTAssertEqual(errorRange, 3..<4, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -163,7 +161,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+        } catch CalculatorError.undefineOrIncorectUsedOfTheDelimiter(let errorRange) {
             XCTAssertEqual(errorRange, 9..<10, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -176,7 +174,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.MissingArgument(let errorRange) {
+        } catch CalculatorError.missingArgument(let errorRange) {
             XCTAssertEqual(errorRange, 0..<3, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -189,7 +187,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+        } catch CalculatorError.undefineOrIncorectUsedOfTheDelimiter(let errorRange) {
             XCTAssertEqual(errorRange, 2..<3, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -202,7 +200,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.UndefineOrIncorectUsedOfTheDelimiter(let errorRange) {
+        } catch CalculatorError.undefineOrIncorectUsedOfTheDelimiter(let errorRange) {
             XCTAssertEqual(errorRange, 0..<1, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -215,7 +213,7 @@ class CalculatorTestsErrorCases: XCTestCase {
         do {
             let _ = try calculator.eval()
             XCTFail("calculator error hasn'n occured")
-        } catch CalculatorError.FactorialFromNegativeNumber(let errorRange) {
+        } catch CalculatorError.factorialFromNegativeNumber(let errorRange) {
             XCTAssertEqual(errorRange, 2..<3, "wrong error range")
         } catch {
             XCTFail("incorrect type of calculator error")
@@ -225,39 +223,39 @@ class CalculatorTestsErrorCases: XCTestCase {
 
 // MARK:- CalculatorDataSource
 extension CalculatorTestsErrorCases : CalculatorDataSource {
-    func constantVariables(calculator: Calculator) -> [String: NSDecimalNumber] {
+    func constantVariables(_ calculator: Calculator) -> [String: NSDecimalNumber] {
         return ["Pi": NSDecimalNumber(string: "3.14"), "exp": NSDecimalNumber(string: "2.7")]
     }
     
-    func functions(calculator: Calculator) -> Set<String> {
+    func functions(_ calculator: Calculator) -> Set<String> {
         return ["sin","cos","max","min"]
     }
 }
 
 // MARK:- CalculatorDelegate
 extension CalculatorTestsErrorCases: CalculatorDelegate {
-    func calculateForCalculator(calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
+    func calculateForCalculator(_ calculator: Calculator, function: String, params: [NSDecimalNumber]) throws -> NSDecimalNumber {
         switch(function) {
         case "sin":
             if params.count != 1 {
                 throw NSError(domain: "wrong number of argument for sin function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: sin(params.first!.doubleValue))
+            return NSDecimalNumber(value: sin(params.first!.doubleValue) as Double)
         case "cos":
             if params.count != 1 {
                 throw NSError(domain: "wrong number of argument for cos function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: cos(params.first!.doubleValue))
+            return NSDecimalNumber(value: cos(params.first!.doubleValue) as Double)
         case "max":
             if params.count != 2 {
                 throw NSError(domain: "wrong number of argument for max function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: max(params[0].doubleValue, params[1].doubleValue))
+            return NSDecimalNumber(value: max(params[0].doubleValue, params[1].doubleValue) as Double)
         case "min":
             if params.count != 2 {
                 throw  NSError(domain: "wrong number of argument for min function", code: 20000, userInfo: nil)
             }
-            return NSDecimalNumber(double: min(params[0].doubleValue, params[1].doubleValue))
+            return NSDecimalNumber(value: min(params[0].doubleValue, params[1].doubleValue) as Double)
         default:
             throw NSError(domain: "unknown \(function) function", code: 20000, userInfo: nil)
         }
