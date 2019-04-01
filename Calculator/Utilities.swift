@@ -9,7 +9,7 @@ import Foundation
             return validationSet.isSuperset(of: CharacterSet(charactersIn: String(self)))
     }
     
-    public var isDelimiter: Bool {
+    var isDelimiter: Bool {
             let valiidDelimiters = "+-*/!()=^,"
             let validationSet = CharacterSet(charactersIn: valiidDelimiters)
         return validationSet.isSuperset(of: CharacterSet(charactersIn: String(self)))
